@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS `account` (
-        `account_id` int NOT NULL,
+        `account_id` int NOT NULL AUTO_INCREMENT,
         `account_username` varchar(255) NOT NULL,
 	`account_password` varchar(255) NOT NULL,
 	`account_email` varchar(255) NOT NULL,

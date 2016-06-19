@@ -13,9 +13,7 @@ $result = query_first("INSERT INTO `account` (`account_username`,`account_passwo
 echo $result;
 */
 
-$result = query_first("SELECT * FROM `account`;");
-
-db_close();
+//$result = query_first("SELECT * FROM `account`;");
 
 
 /*
@@ -42,9 +40,15 @@ function query_first($query){
 	return $data;
 }
 
+function escape_str($str){
+	global $db_link;
+	return $db_link->real_escape_string($str);
+}
+
 
 function db_close(){
 	global $db_link;
 	mysqli_close($db_link);
 }
+
 ?>

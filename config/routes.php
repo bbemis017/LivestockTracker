@@ -1,7 +1,8 @@
 <?php
 	$ROUTE = array( 
-		"/home" => "someplace",
+		"/home" => "account/login.php",
 
-		"/account/login" => "account/login.php"
+		"/account/login" => "account/login.php",
+		"/account/signup" => "account/signup.php"
 	);
 ?>
