@@ -13,7 +13,7 @@
 				<label>Username:</label>
 				<input type="text" name="username" placeholder="Username or Email" class="form-control" autofocus/>
 				<label>Password:</label>
-				<input type="password" name="password" placeholder="password" class="form-control"/>
+				<input type="password" name="password" placeholder="Password" class="form-control"/>
 				</br>
 				<div class="pull-right">
 					<button type="submit" class="btn btn-primary">Log In</button>

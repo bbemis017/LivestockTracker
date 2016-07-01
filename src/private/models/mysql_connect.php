@@ -14,17 +14,31 @@ echo $result;
 */
 
 //$result = query_first("SELECT * FROM `account`;");
+//
 
+function query($query){
+  return mysqli_query($db_link,$query);
+}
+
+function free_result($result){
+  mysqli_free_result($result);
+}
+
+
+function assoc($result){
+  return $result->fetch_assoc();
+}
 
 /*
  * Insert returns true on success
  * Select returns first record as assocative array
  */
+/*
 function query_first($query){
 	global $db_link;
 	$data = array();
 
-	$result = mysqli_query($db_link,$query);
+	$result = query($query);
 
 	if( $result === TRUE ){
 		return true;
@@ -36,9 +50,10 @@ function query_first($query){
 		$data = $result->fetch_assoc();	
 	}
 	
-	mysqli_free_result($result);
+	free_result($result);
 	return $data;
 }
+ */
 
 function escape_str($str){
 	global $db_link;

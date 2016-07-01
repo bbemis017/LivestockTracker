@@ -6,5 +6,5 @@ mkdir /usr/lib/php/7.0/Smarty
 cp -r smarty-3.1.29/libs/* /usr/lib/php/7.0/Smarty
 
 #setup directories in LivestockTracker
-cd /var/www/LivestockTracker/src/private/views
-mkdir cache configs smarty templates
+#cd /var/www/LivestockTracker/src/private/views
+#mkdir cache configs smarty templates
