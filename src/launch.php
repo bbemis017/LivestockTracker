@@ -18,6 +18,8 @@ $smarty->setCompileDir($VIEWS.'smarty');
 $smarty->setCacheDir($VIEWS.'cache');
 $smarty->setConfigDir($VIEWS.'configs');
 
+$smarty->assign('HOST',$HOST);
+
 //  $smarty->testInstall();
 //	phpinfo();
 //  die();

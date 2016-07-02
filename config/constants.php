@@ -1,7 +1,7 @@
 <?php
 //ip address
 $IP = $_SERVER['HTTP_HOST'];
-$HOST = $IP . '/livestocktracker';
+$HOST = "http://" . $IP . '/livestocktracker';
 
 //directories
 $ROOT_DIR = __DIR__ . "/../";
