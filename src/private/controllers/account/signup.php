@@ -7,6 +7,7 @@ if(  $_SERVER['REQUEST_METHOD'] === 'POST' ){
 
     require $MODELS.'db_connect.php';
     require $MODELS.'account/Account.php';
+    require $MODELS.'organization/Organization.php';
 
     if( strcmp( $_POST['password'] , $_POST['password2'] == 0) ){
       $account = Account::createAccount( $_POST['username'], $_POST['email'], $_POST['password'] );
@@ -14,6 +15,7 @@ if(  $_SERVER['REQUEST_METHOD'] === 'POST' ){
         echo "an error occurred";
       }
       else {
+        $org = Organization::createOrganization( $_POST['organization'] );
         echo "signup successful!!!";
       }
 

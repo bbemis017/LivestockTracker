@@ -6,6 +6,7 @@ function query_first($query){
   $data = array();
 
   $result = query($query);
+  echo "</br>" . $result . "</br>";
 
   if( $result === TRUE ){
     return true;
