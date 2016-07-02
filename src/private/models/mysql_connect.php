@@ -17,6 +17,7 @@ echo $result;
 //
 
 function query($query){
+	global $db_link;
   return mysqli_query($db_link,$query);
 }
 
@@ -47,9 +48,9 @@ function query_first($query){
 		return false;
 	}
 	else if($result){
-		$data = $result->fetch_assoc();	
+		$data = $result->fetch_assoc();
 	}
-	
+
 	free_result($result);
 	return $data;
 }
