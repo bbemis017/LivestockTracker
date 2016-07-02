@@ -3,12 +3,13 @@
 require $MODELS . $DATABASE;
 
 function query_first($query){
-  $data = array();
 
   $result = query($query);
-  echo "</br>" . $result . "</br>";
+  if( !isset($result) ){
+    return false;
+  }
 
-  if( $result === TRUE ){
+  else if( $result === TRUE ){
     return true;
   }
   else if( $result === FALSE ){

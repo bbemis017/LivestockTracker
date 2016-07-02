@@ -1,3 +1,4 @@
 src/private/views/cache/*
 src/private/views/smarty/*
 .remote-sync.json
+*.swp
