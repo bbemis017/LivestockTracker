@@ -1,8 +1,10 @@
 <?php
 class Organization {
+  var $id;
   var $name;
 
-  public function Organization($name){
+  public function __construct($id,$name){
+    $this->id = $id;
     $this->name = $name;
   }
 
@@ -15,7 +17,9 @@ class Organization {
     );
     $result = query_first($sql);
     if( $result === true ){
-      return new Organization($name);
+      $sql = "SELECT LAST_INSERT_ID();";
+      $result = query_first($sql);
+      return new Organization($result['LAST_INSERT_ID()'],$name);
     }
     else {
       return false;

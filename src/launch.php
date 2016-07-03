@@ -7,9 +7,8 @@ require "/usr/lib/php/7.0/Smarty/Smarty.class.php";
 require $CONFIG_DIR . 'routes.php';
 $current_url = $_GET['_url'];
 
-ini_set('display_errors',true);
-error_reporting(E_ALL + E_NOTICE);
-
+//display errors that occur in this page
+error_reporting(E_ALL|E_STRICT); ini_set('display_errors', true);
 
 $smarty = new Smarty();
 

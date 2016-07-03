@@ -11,6 +11,14 @@ $CONTROLLERS = $SRC_DIR . "private/controllers/";
 $MODELS = $SRC_DIR . "private/models/";
 $VIEWS = $SRC_DIR . "private/views/";
 
+//authorization
+$AUTH = array(
+  "viewer",
+  "user",
+  "owner",
+  "super"
+);
+
 //method to use to connect to database
 $DATABASE = "mysql_connect.php";
 

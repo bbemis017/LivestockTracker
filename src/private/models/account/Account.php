@@ -1,13 +1,20 @@
 <?php
 class Account {
+	var $id;
 	var $username;
 	var $email;
 	var $active;
 
-	public function Account($username,$email,$active){
+	public function __construct($id,$username,$email,$active){
+		$this->id = $id;
 		$this->username = $username;
 		$this->email = $email;
 		$this->active = $active;
+	}
+
+	public function loginSession(){
+		session_start();
+		$_SESSION['userkey'] = $this->id;
 	}
 
 	public static function login($username,$password){
@@ -29,10 +36,8 @@ class Account {
 		}
 		else{
 			if( password_verify($password, $result['account_password'])){
-				$account = new Account( $result['account_username'], $result['account_email'], $result['account_active'] );
-				session_start();
-				echo "id".$result['account_id'];
-				$_SESSION['userkey'] = $result['account_id'];
+				$account = new Account( $result['account_id'], $result['account_username'], $result['account_email'], $result['account_active'] );
+				$account->loginSession();
 				return $account;
 			}
 			else{
@@ -55,7 +60,11 @@ class Account {
 
 		$result = query_first($sql);
 		if( $result === true){
-			return new Account($username, $email, 0 );
+			$sql = "SELECT LAST_INSERT_ID();";
+			$result = query_first($sql);
+			$account = new Account($result['LAST_INSERT_ID()'], $username, $email, 0 );
+			$account->loginSession();
+			return $account;
 		}
 		else{
 			return false;
@@ -89,7 +98,7 @@ class Account {
 			return false;
 		}
 		else{
-			return new Account( $result['account_username'],$result['account_email'],$result['account_active']);
+			return new Account($id, $result['account_username'],$result['account_email'],$result['account_active']);
 		}
 
 	}

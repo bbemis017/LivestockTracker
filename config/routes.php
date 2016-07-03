@@ -9,7 +9,7 @@
 
 	function redirect_url($str){
 		global $HOST;
-		header('Location: http://' . $HOST . $str);
+		header('Location: ' . $HOST . $str);
 		exit;
 	}
 ?>
