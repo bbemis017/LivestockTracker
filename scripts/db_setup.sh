@@ -10,17 +10,22 @@ mysql -u root "-p$PASSWORD" < "../config/db_setup.sql"
 
 cd ../src/private/models
 
-for dir in ./*/
+#migrate sql files twice in case one is dependent on another
+for i in $(seq 1 2)
 do
-  #get directory names
-  dir=${dir%*/}
-  dir=${dir##*/}
+  echo "\nround $i"
+  for dir in ./*/
+  do
+    #get directory names
+    dir=${dir%*/}
+    dir=${dir##*/}
 
-  #if Table.sql exists
-  if ls "$dir"/Table.sql 1> /dev/null 2>&1; then
-    echo "$dir Table:\n"
-    mysql -u root "-p$PASSWORD" $db < "$dir"/Table.sql
-  fi
+    #if Table.sql exists
+    if ls "$dir"/Table.sql 1> /dev/null 2>&1; then
+      echo "$dir Table:"
+      mysql -u root "-p$PASSWORD" $db < "$dir"/Table.sql
+    fi
+  done
 done
 
-echo "Finished\n";
+echo "\nFinished\n";
