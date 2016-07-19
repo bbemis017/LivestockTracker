@@ -241,3 +241,7 @@ ul.alert-dropdown {
 .calendar {
   margin-top: 75px;
 }
+
+button#createStage {
+    margin-top: 8px;
+}

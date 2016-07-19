@@ -45,7 +45,7 @@
 
 			<!--Side bar -->
 			<div class=" collapse navbar-collapse">
-				<ul class="nav navbar-nav side-nav">
+				<ul class="nav navbar-nav side-nav">z
 					<li id="dashboard">
 						<a href="/accounts/profile"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
 					</li>
