@@ -1,11 +1,17 @@
 <?php
   require $MODELS.'db_connect.php';
   require $MODELS.'account/Account.php';
+  require $MODELS.'role/Role.php';
 
   $account = Account::getAccount();
   if( $account === false)
     redirect_url('/account/login');
 
+  $role = Role::getFirstRole($account);
+  if( $role === false)
+    echo "error";
+
+  db_close();
 
   $dash_content = 'dashboard/calendar.tpl';
 

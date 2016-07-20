@@ -1,4 +1,7 @@
 <?php
+require_once $MODELS.'organization/Organization.php';
+require_once $MODELS.'account/Account.php';
+
 class Role {
   var $account;
   var $org;
@@ -28,6 +31,29 @@ class Role {
       die();
       return false;
     }
+  }
+
+  public static function getFirstRole($account){
+    $sql = "SELECT
+	     organization.org_id, organization.org_name, role.role_auth
+     FROM
+	    `organization`
+     INNER JOIN
+	    `role`
+     ON
+	    organization.org_id=role.role_org_id
+     WHERE
+      role.role_account_id='$account->id'
+    ;";
+    $result = query_first($sql);
+    if( $result === false){
+      return false;
+    }
+    else{
+      $org = new Organization( $result['org_id'], $result['org_name'] );
+      return new Role($account, $org, $result['role_auth'] );
+    }
+
   }
 }
 ?>
