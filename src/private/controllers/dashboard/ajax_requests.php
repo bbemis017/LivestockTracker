@@ -8,6 +8,7 @@
   require $MODELS.'db_connect.php';
   require $MODELS.'account/Account.php';
   require $MODELS.'role/Role.php';
+  require $MODELS.'stage/Stage.php';
 
   $account = Account::getAccount();
   if( $account === false){
@@ -26,13 +27,22 @@
  $data = array();
 
   if( isset($_POST['createStage']) && $_POST['createStage'] === 'true') {
-    $data = createStage($_POST['stageName'],$_POST['stageLength'],$role);
+    $data = createStage($_POST['stageName'], $_POST['stageLength'], $role);
   }
 
   json_response($data);
 
   function createStage($name,$length,$role){
-    $data = array('success' => 'createStage');
-    return $data;
+
+
+    $stage = Stage::createStage($name,$length,$role->org);
+
+    if( $stage === false){
+      return array('error' => 'createStage cred');
+    }
+    else{
+      return array('createStage' => 'success',
+       'stageName' => $stage->name, 'stageLength' => $stage->length);
+    }
   }
 ?>

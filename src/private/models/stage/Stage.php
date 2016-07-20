@@ -13,7 +13,7 @@ class Stage {
     $this->org = $org;
   }
 
-  public function static createStage($name,$length,$org){
+  public static function createStage($name,$length,$org){
     $sql = sprintf(
       "INSERT INTO `stage` (`stage_name`,`stage_length`,`stage_org_id`)
       VALUES ('%s','%d','%d');",
@@ -26,12 +26,12 @@ class Stage {
     if($result === true){
       $sql = "SELECT LAST_INSERT_ID();";
       $result = query_first($sql);
-      return new Stage($result['LAST_INSERT_ID'],$name,$org->id);
+      return new Stage($result['LAST_INSERT_ID()'],$name,$length,$org->id);
     }
     else{
       return false;
     }
-    
+
   }
 
 }

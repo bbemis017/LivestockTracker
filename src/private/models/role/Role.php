@@ -50,8 +50,8 @@ class Role {
       return false;
     }
     else{
-      $org = new Organization( $result['org_id'], $result['org_name'] );
-      return new Role($account, $org, $result['role_auth'] );
+      $org = new Organization( (int) $result['org_id'], (int) $result['org_name'] );
+      return new Role($account, $org, (int) $result['role_auth'] );
     }
 
   }

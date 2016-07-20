@@ -38,6 +38,7 @@ function closeModal(){
     //TODO: clear data from form
     openForms[i]['element'].hide();
   }
+  openForms = new Array();
   modal.modal('hide');
 
 }
