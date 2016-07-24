@@ -54,7 +54,26 @@ function query_first($query){
 	free_result($result);
 	return $data;
 }
- */
+*/
+
+function query_array($query){
+
+	$data = array();
+
+	$result = query($query);
+
+	if( $result === FALSE){
+		return false;
+	}
+
+	while( $row = mysqli_fetch_assoc($result) ){
+		array_push( $data, $row);
+	}
+
+	free_result($result);
+
+	return $data;
+}
 
 function escape_str($str){
 	global $db_link;

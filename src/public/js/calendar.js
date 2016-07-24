@@ -63,9 +63,9 @@ function clickStage(){
   modal.modal('show');
 }
 
-function getFormInfo(element,fields,submitFunc){
+function getFormInfo(element,submitFunc){
   var form = {
-    'element' : $(element) , 'fields' : fields,
+    'element' : $(element),
     'submit' : submitFunc
   };
   return form;
@@ -73,10 +73,8 @@ function getFormInfo(element,fields,submitFunc){
 
 function createSpeciesForm(){
   //form setup and display
-  var createSpeciesForm = $('#createSpecies');
-  var fields = new Array('#speciesName');
-  openForms.push( getFormInfo('#createSpecies',fields) );
-  createSpeciesForm.show();
+  openForms.push( getFormInfo('#createSpecies') );
+  $('#createSpecies').show();
 
   selectStagesForm();
 }
@@ -86,18 +84,18 @@ var numStages;
 function selectStagesForm(){
   numStages = 1;
 
+  updateStageList();
+
   //form setup and display
-  var fields = new Array(); //TODO: figure out how to do this one
-  openForms.push( getFormInfo('#selectStages' , fields) );
-  selectStagesForm.show();
+  openForms.push( getFormInfo('#selectStages',submitStagesForm) );
+  $('#selectStages').show();
   $('#createStageBtn').show();
 }
 
 function createStageForm(){
 
   //form setup and display
-  var fields = new Array( $('#stageName'), $('#stageLength') );
-  openForms.push( getFormInfo('#createStage',fields,submitCreateStageForm) );
+  openForms.push( getFormInfo('#createStage',submitCreateStageForm) );
   $('#createStage').show();
   if( formType === 'Stage'){
     $('#createStageBtn').hide();
@@ -112,17 +110,28 @@ function submitForm(){
 }
 
 function submitCreateStageForm(){
-  console.log("submit create stage");
   data = {
     'createStage' : 'true',
     'stageName' : $('#stageName').val(),
     'stageLength' : $('#stageLength').val()
   };
-  sendAjax('/dashboard/ajax/','POST',updateStageList,data);
+  sendAjax('/dashboard/ajax/','POST',temp,data);
 
 }
 
-function updateStageList(json){
+function submitCreateSpeciesForm(){
+  data = {
+    'createSpecies' : true,
+    'speciesName' : $('#speciesName').val()
+  }
+  sendAjax('/dashboard/ajax/','POST',temp,data);
+}
+
+function submitStagesForm(){
+
+}
+
+function temp(json){
   console.log("update stage list");
   console.log(json);
 }
@@ -142,4 +151,21 @@ function sendAjax(url,type,successCall,data){
       console.log(error);
     }
   });
+}
+
+function updateStageList(){
+  sendAjax('/dashboard/ajax/','POST', function (json){
+      $('#selectStageName').empty();
+      $('#selectStageName').append($("<option value='-1'>select</option>"));
+      var stageList = JSON.parse( json.stageList );
+      for(var i = 0; i < stageList.length; i++){
+        $('#selectStageName').append($("<option value=" + stageList[i]['stage_id'] + ">" + stageList[i]['stage_name'] + "</option>"));
+      }
+    },
+    { 'getStages' : true }
+  );
+}
+
+function addStageOption(name){
+
 }

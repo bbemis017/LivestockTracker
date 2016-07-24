@@ -1,7 +1,7 @@
 <?php
 
   if( !isset($_POST['ajax_request']) || $_POST['ajax_request'] !== 'true'){
-    $data = array('error' => 'Not a json response');
+    $data = array('error' => 'Not an ajax request');
     json_response($data);
   }
 
@@ -27,9 +27,13 @@
  $data = array();
 
   if( isset($_POST['createStage']) && $_POST['createStage'] === 'true') {
-    $data = createStage($_POST['stageName'], $_POST['stageLength'], $role);
+    $data = array_merge( $data , createStage($_POST['stageName'], $_POST['stageLength'], $role) );
+  }
+  if( isset($_POST['getStages']) && $_POST['getStages'] === 'true'){
+    $data = array_merge($data, getStages($role) );
   }
 
+  db_close();
   json_response($data);
 
   function createStage($name,$length,$role){
@@ -38,11 +42,21 @@
     $stage = Stage::createStage($name,$length,$role->org);
 
     if( $stage === false){
-      return array('error' => 'createStage cred');
+      return array('error' => 'true', 'createStageError' => 'createStage cred');
     }
     else{
       return array('createStage' => 'success',
        'stageName' => $stage->name, 'stageLength' => $stage->length);
+    }
+  }
+
+  function getStages($role){
+    $stageList = Stage::getStageList($role->org);
+    if( $stageList === false){
+      return array('error' => 'true', 'getStagesError' => 'failure');
+    }
+    else{
+      return array('stageList' => json_encode( $stageList ) );
     }
   }
 ?>

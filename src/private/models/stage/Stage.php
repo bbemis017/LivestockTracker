@@ -34,5 +34,21 @@ class Stage {
 
   }
 
+  public static function getstageList($org){
+    $sql = sprintf(
+      "SELECT
+        stage_id, stage_name, stage_length
+      FROM
+        `stage`
+      WHERE
+        stage_org_id = %d;",
+      $org->id
+    );
+
+    $result = query_array($sql);
+
+    return $result;
+  }
+
 }
 ?>
