@@ -32,6 +32,9 @@
   if( isset($_POST['getStages']) && $_POST['getStages'] === 'true'){
     $data = array_merge($data, getStages($role) );
   }
+  if( isset( $_POST['selectStage'] ) && $_POST['selectStage'] === 'true' ){
+     json_response(array('selectStages' => 'yayyyy'));
+  }
 
   db_close();
   json_response($data);

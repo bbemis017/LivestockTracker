@@ -19,18 +19,23 @@
 
         <div hidden id="selectStages" class="form-group">
           <h3>Select Stages</h3>
-          <div id="stage" class="row">
+          <div id="stage1" class="row">
             <div class="col-xs-9">
               <select id="selectStageName" class="form-control">
                 <option>select</option>
               </select>
-              <button id="addSelectStage" class="btn btn-success pull-right"><span class="glyphicon glyphicon-plus"></span></button>
+              <!--<button id="addSelectStage" class="btn btn-success pull-right" onclick="addSelectStage($(this));"><span class="glyphicon glyphicon-plus"></span></button>-->
             </div>
             <div class="col-xs-1">
-              <span id="selectStageRank">1</span>
+              <span id="selectStageRank">0</span>
             </div>
             <div class="col-xs-2">
               <button id="deleteSelectStage" class="btn btn-danger pull-right"><span class="glyphicon glyphicon-minus"></span></button>
+            </div>
+          </div>
+          <div id="stageAddSection" class="row">
+            <div class="col-xs-9">
+              <button id="addSelectStage" class="btn btn-success pull-right" onclick="addSelectStage($(this));"><span class="glyphicon glyphicon-plus"></span></button>
             </div>
           </div>
           <button id="newStage" type="button" class="btn btn-default btn-md">New Stage</button>

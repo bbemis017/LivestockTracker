@@ -2,6 +2,8 @@ var modal = $('#createModal');
 var openForms = new Array();
 var formType;
 
+var numStages;
+
 $('#modalClose').click(closeModal);
 $('#newStage').click(createStageForm);
 $('#modalCreateBtn').click(submitForm);
@@ -31,6 +33,17 @@ $(document).ready(function(){
   });
 
 });
+
+function addSelectStage(e){
+
+  var newElement = $('#stage1').clone();
+  numStages++;
+  newElement.attr("id","stage" + numStages);
+
+  newElement.find("#selectStageRank").text(numStages);
+
+  $('#stageAddSection').before( newElement);
+}
 
 function closeModal(){
   formType = '';
@@ -73,13 +86,12 @@ function getFormInfo(element,submitFunc){
 
 function createSpeciesForm(){
   //form setup and display
-  openForms.push( getFormInfo('#createSpecies') );
+  openForms.push( getFormInfo('#createSpecies', submitCreateSpeciesForm ) );
   $('#createSpecies').show();
 
   selectStagesForm();
 }
 
-var numStages;
 
 function selectStagesForm(){
   numStages = 1;
@@ -87,7 +99,7 @@ function selectStagesForm(){
   updateStageList();
 
   //form setup and display
-  openForms.push( getFormInfo('#selectStages',submitStagesForm) );
+  openForms.push( getFormInfo('#selectStages',submitStagesForm ) );
   $('#selectStages').show();
   $('#createStageBtn').show();
 }
@@ -103,32 +115,49 @@ function createStageForm(){
 }
 
 function submitForm(){
+  var data = {};
   for(var i = 0; i < openForms.length; i++){
-    openForms[i].submit();
+    data = $.extend( data, openForms[i].submit() );
   }
+  //console.log(data);
+  sendAjax("/dashboard/ajax/","POST",temp,data);
   closeModal();
 }
 
 function submitCreateStageForm(){
-  data = {
-    'createStage' : 'true',
-    'stageName' : $('#stageName').val(),
-    'stageLength' : $('#stageLength').val()
+  var data = {
+    "createStage" : "true",
+    "stageName" : $('#stageName').val(),
+    "stageLength" : $('#stageLength').val()
   };
-  sendAjax('/dashboard/ajax/','POST',temp,data);
-
+  //sendAjax("/dashboard/ajax/","POST",temp,data);
+  return data;
 }
 
 function submitCreateSpeciesForm(){
-  data = {
-    'createSpecies' : true,
-    'speciesName' : $('#speciesName').val()
-  }
-  sendAjax('/dashboard/ajax/','POST',temp,data);
+  var data = {
+    "createSpecies" : "true",
+    "speciesName" : $('#speciesName').val()
+  };
+  //sendAjax('/dashboard/ajax/','POST',temp,data);
+  return data;
 }
 
 function submitStagesForm(){
-
+  var stages = [];
+  for(var i = 0; i < numStages; i++){
+    var val = $('#stage' + (i+1) ).find('#selectStageName').val();
+    if( val >= 0){
+      stages.push(val);
+    }
+  }
+  var data = {
+    "selectStage" : true,
+    "stages" : JSON.stringify(stages)
+  };
+  console.log(data);
+  //sendAjax('/dashboard/ajax/','POST',temp,data);
+  return data;
 }
 
 function temp(json){
@@ -138,15 +167,16 @@ function temp(json){
 
 function sendAjax(url,type,successCall,data){
   console.log(url);
-  url = '/livestocktracker' + url;
+  url = "/livestocktracker" + url;
   console.log(url);
-  data['ajax_request'] = true;
+  data['ajax_request'] = 'true';
+  console.log(data);
   $.ajax({
-    type : type,
-    url : url,
-    data : data,
-    success : successCall,
-    error : function(error){
+    "type" : type,
+    "url" : url,
+    "data" : data,
+    "success" : successCall,
+    "error" : function(error){
       console.log('error');
       console.log(error);
     }
@@ -154,18 +184,15 @@ function sendAjax(url,type,successCall,data){
 }
 
 function updateStageList(){
-  sendAjax('/dashboard/ajax/','POST', function (json){
+  sendAjax("/dashboard/ajax/","POST", function (json){
       $('#selectStageName').empty();
       $('#selectStageName').append($("<option value='-1'>select</option>"));
+      console.log( json.stageList );
       var stageList = JSON.parse( json.stageList );
       for(var i = 0; i < stageList.length; i++){
         $('#selectStageName').append($("<option value=" + stageList[i]['stage_id'] + ">" + stageList[i]['stage_name'] + "</option>"));
       }
     },
-    { 'getStages' : true }
+    { "getStages" : "true" }
   );
-}
-
-function addStageOption(name){
-
 }
