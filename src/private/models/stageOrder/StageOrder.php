@@ -16,7 +16,7 @@ class StageOrder {
     $this->org = $org;
   }
 
-  public function static createStageOrder($species,$stage,$rank,$org){
+  public static function createStageOrder($species,$stage,$rank,$org){
     $sql = sprintf(
       "INSERT INTO
         (`stage_order_species_id`,`stage_order_stage_id`,`stage_order_rank`,
@@ -30,6 +30,31 @@ class StageOrder {
 
     return new StageOrder($species,$stage,$rank,$org);
   }
-  
+
+  public static function createOrders($species,$rankList,$org){
+	$sql = "INSERT INTO
+		`stage_order` (`stage_order_species_id`,`stage_order_stage_id`,`stage_order_rank`,`stage_order_org_id`)
+	VALUES ";
+	for( $i = 0; $i < count($rankList); $i++){
+		$value = sprintf("(%d,%s,%d,%d)",$species->id,escape_str($rankList[$i]),$i,$org->id);
+		if( $i == count($rankList) - 1){
+			$value .= ";";
+		}
+		else{
+			$value .= ",";
+		}
+		$sql .= $value;
+	}
+
+	$result = query_first($sql);
+	if( $result === true){
+		return true;
+	}
+	else{
+		return false;
+	}
+
+  }
+
 }
 ?>

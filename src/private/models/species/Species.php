@@ -12,7 +12,7 @@ class Species {
     $this->org = $org;
   }
 
-  public function static createSpecies($name,$org){
+  public static function createSpecies($name,$org){
       $sql = sprintf("
         INSERT INTO `species` (`species_name`,`species_org_id`)
         VALUES ('%s','%d');",
@@ -29,6 +29,23 @@ class Species {
       else{
         return false;
       }
+  }
+
+  public static function getSpeciesList($org){
+	  $sql = sprintf("
+	  	SELECT
+			species_id, species_name
+		FROM
+			`species`
+		WHERE
+			species_org_id = %d
+		",
+			$org->id
+		);
+
+		$result = query_array($sql);
+
+		return $result;
   }
 
 }

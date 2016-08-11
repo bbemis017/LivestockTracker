@@ -9,6 +9,22 @@
 
       <div class="modal-body">
 
+		<div hidden id="createGroup" class="form-group">
+			<h3>Group</h3>
+
+			<label for="groupName" class="control-label">Name: </label>
+			<input id="groupName" class="form-control" type="text" placeholder="Name"/>
+			<br/>
+
+			<label for="groupSize" class="control-label">Size: </label>
+			<input id="groupSize" class="form-control" type="text" placeholder="200"/>
+			<br/>
+
+			<label for="groupSpeciesName" class="control-label">Species: </label>
+			<select id="groupSpeciesName" class="form-control"></select>
+
+		</div>
+
         <div hidden id="createSpecies" class="form-group">
           <h3>Species</h3>
 
@@ -21,16 +37,15 @@
           <h3>Select Stages</h3>
           <div id="stage1" class="row">
             <div class="col-xs-9">
-              <select id="selectStageName" class="form-control">
+              <select id="selectStageName" class="form-control stageList">
                 <option>select</option>
               </select>
-              <!--<button id="addSelectStage" class="btn btn-success pull-right" onclick="addSelectStage($(this));"><span class="glyphicon glyphicon-plus"></span></button>-->
             </div>
             <div class="col-xs-1">
               <span id="selectStageRank">0</span>
             </div>
             <div class="col-xs-2">
-              <button id="deleteSelectStage" class="btn btn-danger pull-right"><span class="glyphicon glyphicon-minus"></span></button>
+              <button id="deleteSelectStage" onclick="deleteSelectStage($(this));" class="btn btn-danger pull-right"><span class="glyphicon glyphicon-minus"></span></button>
             </div>
           </div>
           <div id="stageAddSection" class="row">
@@ -50,7 +65,9 @@
           <label for="stageLength" class="control-label">Length:</label>
           <input id="stageLength" class="form-control" type="text" placeholder="10 days"/>
 
+
           <button id="createStageBtn" type="button" class="btn btn-success pull-right">Create Stage</button>
+          <button id="cancelStageBtn" type="button" class="btn btn-sm btn-danger pull-right">Cancel</button>
           </br>
         </div>
 

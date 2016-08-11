@@ -1,12 +1,15 @@
 var modal = $('#createModal');
 var openForms = new Array();
 var formType;
+var selectedStages;
 
 var numStages;
 
 $('#modalClose').click(closeModal);
-$('#newStage').click(createStageForm);
+$('#newStage').click(newStageClick);
 $('#modalCreateBtn').click(submitForm);
+$('#cancelStageBtn').click(newStageCancel);
+$('#createStageBtn').click(createStageClick);
 
 //initialize calendar when page loads
 $(document).ready(function(){
@@ -37,12 +40,46 @@ $(document).ready(function(){
 function addSelectStage(e){
 
   var newElement = $('#stage1').clone();
+  console.log("num" + numStages);
   numStages++;
+  console.log("num" + numStages);
   newElement.attr("id","stage" + numStages);
 
   newElement.find("#selectStageRank").text(numStages);
+  newElement.find("#deleteSelectStage").show();
 
   $('#stageAddSection').before( newElement);
+
+  selectedStages.push( $('#stage' + numStages).find("#selectStageName") );
+}
+
+function deleteSelectStage(element){
+    var stage = element.parent().parent();
+    selectedStages.splice( selectedStages.indexOf(stage) , 1);
+    stage.remove();
+}
+
+function newStageClick(){
+    $('#newStage').hide();
+    $('#modalCreateBtn').prop('disabled',true);
+    createStageForm();
+}
+
+function createStageClick(){
+	var data = submitCreateStageForm();
+	sendAjax("/dashboard/ajax/","POST",function(json){
+		updateStageList();
+		//addSelectStage($('#stage'+numStages));
+		newStageCancel();
+	},data);
+}
+
+function newStageCancel(){
+    $('#createStage').hide();
+    openForms.splice( openForms.indexOf( getFormInfo('#selectStages',submitStagesForm ) ) , 1);
+    $('#newStage').show();
+    $('#modalCreateBtn').prop('disabled',false);
+
 }
 
 function closeModal(){
@@ -59,6 +96,7 @@ function closeModal(){
 function clickGroup(){
   formType = 'Group';
   console.log("group");
+  createGroupForm();
   modal.modal('show');
 }
 
@@ -84,17 +122,30 @@ function getFormInfo(element,submitFunc){
   return form;
 }
 
+function createGroupForm(){
+
+	openForms.push( getFormInfo('#createGroup', submitCreateGroupForm ) );
+	updateSpeciesList();
+	$('#createGroup').show();
+
+}
+
 function createSpeciesForm(){
   //form setup and display
   openForms.push( getFormInfo('#createSpecies', submitCreateSpeciesForm ) );
   $('#createSpecies').show();
-
+  $('#newStage').show();
   selectStagesForm();
 }
 
 
 function selectStagesForm(){
   numStages = 1;
+
+  selectedStages = [];
+  var stage1 = $('#stage1');
+  stage1.find('#deleteSelectStage').hide();
+  selectedStages.push( stage1.find('#selectStageName') );
 
   updateStageList();
 
@@ -130,7 +181,7 @@ function submitCreateStageForm(){
     "stageName" : $('#stageName').val(),
     "stageLength" : $('#stageLength').val()
   };
-  //sendAjax("/dashboard/ajax/","POST",temp,data);
+
   return data;
 }
 
@@ -139,34 +190,41 @@ function submitCreateSpeciesForm(){
     "createSpecies" : "true",
     "speciesName" : $('#speciesName').val()
   };
-  //sendAjax('/dashboard/ajax/','POST',temp,data);
+
   return data;
+}
+
+function submitCreateGroupForm(){
+	var data = {
+		"createGroup" : "true",
+		"groupName" : $('#groupName').val(),
+		"groupSize" : $('#groupSize').val(),
+		"groupSpecies" : $('#groupSpeciesName option:selected').text()
+	};
+	console.log(data);
+	return data;
 }
 
 function submitStagesForm(){
   var stages = [];
-  for(var i = 0; i < numStages; i++){
-    var val = $('#stage' + (i+1) ).find('#selectStageName').val();
-    if( val >= 0){
-      stages.push(val);
-    }
+  for( var i = 0; i < selectedStages.length; i++){
+      var val = selectedStages[i].val();
+      if( val >= 0){
+          stages.push(val);
+      }
   }
   var data = {
     "selectStage" : true,
     "stages" : JSON.stringify(stages)
   };
-  console.log(data);
-  //sendAjax('/dashboard/ajax/','POST',temp,data);
   return data;
 }
 
 function temp(json){
-  console.log("update stage list");
   console.log(json);
 }
 
 function sendAjax(url,type,successCall,data){
-  console.log(url);
   url = "/livestocktracker" + url;
   console.log(url);
   data['ajax_request'] = 'true';
@@ -185,14 +243,38 @@ function sendAjax(url,type,successCall,data){
 
 function updateStageList(){
   sendAjax("/dashboard/ajax/","POST", function (json){
-      $('#selectStageName').empty();
-      $('#selectStageName').append($("<option value='-1'>select</option>"));
-      console.log( json.stageList );
-      var stageList = JSON.parse( json.stageList );
-      for(var i = 0; i < stageList.length; i++){
-        $('#selectStageName').append($("<option value=" + stageList[i]['stage_id'] + ">" + stageList[i]['stage_name'] + "</option>"));
-      }
+	  console.log(json);
+	  var stages = $('.stageList');
+
+	  if( typeof json.stageList === 'undefined')
+	  	return;
+
+	  var stageList = JSON.parse( json.stageList );
+	  for( var j = 0; j < stages.length; j++){
+		var stage = $(stages[j]);
+		//stage.empty();
+      	stage.append($("<option value='-1'>select</option>"));
+
+      	for(var i = 0; i < stageList.length; i++){
+        	stage.append($("<option value=" + stageList[i]['stage_id'] + ">" + stageList[i]['stage_name'] + "</option>"));
+      	}
+	  }
     },
     { "getStages" : "true" }
   );
+}
+
+function updateSpeciesList(){
+	sendAjax("/dashboard/ajax/","POST", function (json) {
+		var species = $('#selectSpeciesName');
+		var speciesList = JSON.parse( json.speciesList );
+
+		species.append( $("<option value='-1'>select</option>") );
+
+		for( var i = 0; i < speciesList.length; i++) {
+			species.append($("<option value=" + speciesList[i]['species_id'] + ">" + speciesList[i]['species_name'] + "</option") );
+		}
+	},
+	{ "getSpecies" : "true" }
+	);
 }
