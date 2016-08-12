@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS `group` (
-  `group_id` INTEGER NOT NULL,
+  `group_id` INTEGER NOT NULL AUTO_INCREMENT,
   `group_name` VARCHAR(255),
   `group_start` DATE NOT NULL,
   `group_end` DATE NOT NULL,

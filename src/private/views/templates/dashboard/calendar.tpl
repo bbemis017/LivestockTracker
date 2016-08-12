@@ -22,6 +22,10 @@
 
 			<label for="groupSpeciesName" class="control-label">Species: </label>
 			<select id="groupSpeciesName" class="form-control"></select>
+			<br/>
+
+			<label for="startDate" class="control-label">Start: </label>
+			<input id="startDate" class="form-control" type="date"/>
 
 		</div>
 

@@ -11,6 +11,7 @@
   require_once $MODELS.'stage/Stage.php';
   require_once $MODELS.'species/Species.php';
   require_once $MODELS.'stageOrder/StageOrder.php';
+  require_once $MODELS.'group/Group.php';
 
   $account = Account::getAccount();
   if( $account === false){
@@ -42,6 +43,11 @@ if( isset( $_POST['selectStage'] ) && $_POST['selectStage'] === 'true' ){
 			//json_response(array('selectStages' => 'yayyyy'));
 			$data = array_merge($data, createSpecies($_POST['speciesName'], $_POST['stages'], $role ) );
 	}
+}
+if( isset( $_POST['createGroup'] ) && $_POST['createGroup'] === 'true'){
+	$data = array_merge( $data ,
+		createGroup( $_POST['groupName'], $_POST['groupSize'], $_POST['groupStart'], $_POST['groupSpecies'], $role )
+	);
 }
 
 
@@ -85,6 +91,26 @@ if( isset( $_POST['selectStage'] ) && $_POST['selectStage'] === 'true' ){
 
 	  }
 
+  }
+
+  function createGroup($name, $size, $start, $speciesId, $role){
+
+	  $stageList = StageOrder::getStages( $speciesId, $role->org );
+
+	  $groupLength = 0;
+	  for( $i = 0; $i < count( $stageList ); $i++){
+		  $groupLength += intval( $stageList[$i]['stage_length'] );
+	  }
+
+	  $group = Group::createGroup( $name, $start, $groupLength, $size, $speciesId, $role->org);
+
+	  if( $group === false){
+		  return array('error' => 'true', 'createGroupError' => 'failure');
+	  }
+	  else{
+		  return array('createGroup' => 'success' ,'groupId' => $size,
+	  		'groupName' => $name );
+	  }
   }
 
   function getStages($role){

@@ -56,5 +56,28 @@ class StageOrder {
 
   }
 
+  public static function getStages( $speciesId, $org){
+	$sql = sprintf(
+	"SELECT stage_order.stage_order_rank, stage.stage_id, stage.stage_name, stage.stage_length
+	FROM `stage_order`
+	INNER JOIN `stage`
+	ON stage_order.stage_order_stage_id = stage.stage_id
+	WHERE stage_order_species_id = %d AND stage_order_org_id = %d
+	ORDER BY stage_order.stage_order_rank;",
+	$speciesId,
+	$org->id
+	);
+
+	$result = query_array($sql);
+
+	if( $result === false){
+		return false;
+	}
+	else{
+		return $result;
+	}
+
+  }
+
 }
 ?>

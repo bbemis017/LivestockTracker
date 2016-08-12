@@ -21,18 +21,19 @@ class Group {
     $this->org = $org;
   }
 
-  public static function createGroup($name,$start,$count,$species,$org){
-    //TODO: calculate an ending date for the group
-    $end = "June 21";
+  public static function createGroup($name,$start,$groupLength,$count,$speciesId,$org){
+
+	$end = date('Y-m-d', strtotime($start. ' + ' . $groupLength . ' days') );
 
     $sql = sprintf(
-      "INSERT INTO (`group_name`,`group_start`,`group_end`,`group_count`,
+      "INSERT INTO `group` (`group_name`,`group_start`,`group_end`,`group_count`,
         `group_species_id`,`group_org_id`)
       VALUES ('%s','%s','%s','%d','%d','%d');",
       escape_str($name),
       escape_str($start),
+	  escape_str($end),
       $count,
-      $species->id,
+      $speciesId,
       $org->id
     );
 
@@ -40,8 +41,7 @@ class Group {
     if( $result === true){
       $sql = "SELECT LAST_INSERT_ID();";
       $result = query_first($sql);
-      $group = new Group($result['LAST_INSERT_ID()'],$name,$start,$end,$count,
-        $species,$org);
+      $group = new Group($result['LAST_INSERT_ID()'],$name,$start,$end,$count,$speciesId,$org);
       return $group;
     }
     else {

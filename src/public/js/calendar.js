@@ -40,9 +40,9 @@ $(document).ready(function(){
 function addSelectStage(e){
 
   var newElement = $('#stage1').clone();
-  console.log("num" + numStages);
+
   numStages++;
-  console.log("num" + numStages);
+
   newElement.attr("id","stage" + numStages);
 
   newElement.find("#selectStageRank").text(numStages);
@@ -199,9 +199,9 @@ function submitCreateGroupForm(){
 		"createGroup" : "true",
 		"groupName" : $('#groupName').val(),
 		"groupSize" : $('#groupSize').val(),
-		"groupSpecies" : $('#groupSpeciesName option:selected').text()
+		"groupSpecies" : $('#groupSpeciesName option:selected').val(),
+		"groupStart" : $("#startDate").val()
 	};
-	console.log(data);
 	return data;
 }
 
@@ -243,7 +243,6 @@ function sendAjax(url,type,successCall,data){
 
 function updateStageList(){
   sendAjax("/dashboard/ajax/","POST", function (json){
-	  console.log(json);
 	  var stages = $('.stageList');
 
 	  if( typeof json.stageList === 'undefined')
@@ -252,11 +251,11 @@ function updateStageList(){
 	  var stageList = JSON.parse( json.stageList );
 	  for( var j = 0; j < stages.length; j++){
 		var stage = $(stages[j]);
-		//stage.empty();
-      	stage.append($("<option value='-1'>select</option>"));
+		stage.empty();
+      	stage.append( $("<option value='-1'>select</option>") );
 
       	for(var i = 0; i < stageList.length; i++){
-        	stage.append($("<option value=" + stageList[i]['stage_id'] + ">" + stageList[i]['stage_name'] + "</option>"));
+        	stage.append( $("<option value=" + stageList[i]['stage_id'] + ">" + stageList[i]['stage_name'] + "</option>") );
       	}
 	  }
     },
@@ -266,13 +265,15 @@ function updateStageList(){
 
 function updateSpeciesList(){
 	sendAjax("/dashboard/ajax/","POST", function (json) {
-		var species = $('#selectSpeciesName');
+		var species = $('#groupSpeciesName');
+
 		var speciesList = JSON.parse( json.speciesList );
 
 		species.append( $("<option value='-1'>select</option>") );
+		species.empty();
 
 		for( var i = 0; i < speciesList.length; i++) {
-			species.append($("<option value=" + speciesList[i]['species_id'] + ">" + speciesList[i]['species_name'] + "</option") );
+			species.append( $("<option value=" + speciesList[i]['species_id'] + ">" + speciesList[i]['species_name'] + "</option>") );
 		}
 	},
 	{ "getSpecies" : "true" }
