@@ -50,5 +50,33 @@ class Group {
 
   }
 
+  public static function getGroupsInRange($start,$end,$org){
+	  $sql = sprintf("SELECT *
+	  FROM `group`
+	  WHERE
+	  	(
+			( group_start >= '%s' AND group_start <= '%s' )
+			OR
+			( group_end >= '%s' AND group_end <= '%s')
+			OR
+			( group_start <= '%s' AND group_end >= '%s')
+		)
+		AND group_org_id = '%d'
+		;",
+		escape_str( $start ),
+		escape_str( $end ),
+		escape_str( $start ),
+		escape_str( $end ),
+		escape_str( $start ),
+		escape_str( $end ),
+		$org->id
+		);
+
+		$result = query_array($sql);
+
+		return $result;
+
+  }
+
 }
 ?>

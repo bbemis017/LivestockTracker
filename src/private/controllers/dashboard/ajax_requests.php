@@ -29,6 +29,9 @@
 
  $data = array();
 
+if( isset($_POST['calendarData']) && $_POST['calendarData'] === 'true' ){
+	$data = array_merge($data, calendarData($_POST['calendar_start'], $_POST['calendar_end'], $role) );
+}
 if( isset($_POST['getStages']) && $_POST['getStages'] === 'true'){
 	$data = array_merge($data, getStages($role) );
 }
@@ -108,7 +111,7 @@ if( isset( $_POST['createGroup'] ) && $_POST['createGroup'] === 'true'){
 		  return array('error' => 'true', 'createGroupError' => 'failure');
 	  }
 	  else{
-		  return array('createGroup' => 'success' ,'groupId' => $size,
+		  return array('createGroup' => 'true' ,'groupId' => $size,
 	  		'groupName' => $name );
 	  }
   }
@@ -131,5 +134,41 @@ if( isset( $_POST['createGroup'] ) && $_POST['createGroup'] === 'true'){
 	else{
 		return array('speciesList' => json_encode( $speciesList ) );
 	}
+  }
+
+  function calendarData($start,$end,$role){
+
+	  $events = array();
+	  $groups = Group::getGroupsInRange($start,$end,$role->org);
+
+	  for($i = 0; $i < count($groups); $i++){
+
+		  $group_start = $groups[$i]['group_start'];
+		  $group_name = $groups[$i]['group_name'];
+
+		  $stages = StageOrder::getStages( intval( $groups[$i]['group_species_id'] ), $role->org );
+
+		  $lastDays = 0;
+		  $days = 0;
+		  for($j = 0; $j < count($stages); $j++){
+
+			  //get days till start of stage and end of stage
+			  $lastDays = $days;
+			  $days += intval( $stages[$j]['stage_length'] );
+
+			  $stage_start = date('Y-m-d', strtotime($group_start . ' + ' . $lastDays . ' days') ) . '';
+			  $stage_end = date('Y-m-d', strtotime($group_start . ' + ' . $days . ' days') );
+
+			  $title = $group_name . ': '. $stages[$j]['stage_name'] . ': ' . $groups[$i]['group_count'];
+
+			  $event = array('title' => $title, 'date_start' => $stage_start, 'date_end' => $stage_end );
+			  array_push( $events, $event );
+
+		  }
+
+
+	  }
+
+	  return array('result' => $events );
   }
 ?>
