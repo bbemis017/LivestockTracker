@@ -32,10 +32,40 @@ $(document).ready(function(){
       left: 'prev,next today Group,Species,Stage',
       center: 'title',
       right: 'month,agendaWeek,agendaDay'
-    }
+  	},
+	events: getEvents
   });
 
 });
+
+function getEvents(start, end, timezone, callback){
+
+	$.ajax({
+		"url": "/livestocktracker/dashboard/ajax/",
+		"type": "POST",
+		"dataType": "json",
+		"data": {
+			"ajax_request" : "true",
+			"calendarData" : "true",
+			"calendar_start" : start.format(),
+			"calendar_end" : end.format()
+		},
+		"success": function(doc) {
+			var events = [];
+			if(doc.result){
+				$.map( doc.result, function( r ) {
+					events.push({
+						"title": r.title,
+						"start": r.date_start,
+						"end": r.date_end,
+						"allDay": 'true'
+					});
+				});
+			}
+			callback(events);
+		}
+	});
+}
 
 function addSelectStage(e){
 
@@ -221,7 +251,9 @@ function submitStagesForm(){
 }
 
 function temp(json){
-  console.log(json);
+  if(json.createGroup && json.createGroup === 'true'){
+	  $('#calendar').fullCalendar('refetchEvents');
+  }
 }
 
 function sendAjax(url,type,successCall,data){
