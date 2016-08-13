@@ -33,15 +33,12 @@ $(document).ready(function(){
       center: 'title',
       right: 'month,agendaWeek,agendaDay'
   	},
-	eventAfterAllRender: calendarLoaded,
 	events: getEvents
   });
 
 });
 
 function getEvents(start, end, timezone, callback){
-	console.log("test");
-
 	$.ajax({
 		"url": "/livestocktracker/dashboard/ajax/",
 		"type": "POST",
@@ -53,8 +50,6 @@ function getEvents(start, end, timezone, callback){
 			"calendar_end" : end.format()
 		},
 		"success": function(doc) {
-			console.log("success");
-			console.log(doc);
 			var events = [];
 			if(doc.result){
 				$.map( doc.result, function( r ) {
@@ -69,18 +64,6 @@ function getEvents(start, end, timezone, callback){
 			callback(events);
 		}
 	});
-}
-
-function calendarLoaded(){
-	console.log("loaded");
-
-	//get date range
-	//$('calendar').fullCalendar('getView').start
-	//$('calendar').fullCalendar('getView').end
-
-	var event = {"id":1 , "title": 'New event', "start":  new Date()};
-
-	//$('#calendar').fullCalendar( 'renderEvent', event, true);
 }
 
 function addSelectStage(e){
