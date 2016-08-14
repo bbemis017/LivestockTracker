@@ -1,6 +1,6 @@
 var modal = $('#createModal');
 var openForms = new Array();
-var formType;
+var formType, formAction, editId;
 var selectedStages;
 
 var numStages;
@@ -33,10 +33,33 @@ $(document).ready(function(){
       center: 'title',
       right: 'month,agendaWeek,agendaDay'
   	},
-	events: getEvents
+	events: getEvents,
+	eventClick: editEvent
   });
 
 });
+
+function editEvent(calEvent, jsEvent, view){
+
+	editId = calEvent.id;
+
+	formType = 'Group';
+	formAction = 'edit';
+
+	sendAjax("/dashboard/ajax/","POST",function(json){
+		console.log(json);
+
+		$('#groupName').val( json.groupName );
+		$('#groupSize').val( json.groupSize );
+		$('#groupSpeciesName').val( json.groupSpecies );
+		$('#startDate').val( json.groupStart );
+
+		createGroupForm();
+		modal.modal('show');
+	},
+	{ "getGroup" : "true", "groupId" : editId}
+	);
+}
 
 function getEvents(start, end, timezone, callback){
 	$.ajax({
@@ -54,6 +77,7 @@ function getEvents(start, end, timezone, callback){
 			if(doc.result){
 				$.map( doc.result, function( r ) {
 					events.push({
+						"id" : r.id,
 						"title": r.title,
 						"start": r.date_start,
 						"end": r.date_end,
@@ -200,7 +224,7 @@ function submitForm(){
     data = $.extend( data, openForms[i].submit() );
   }
   //console.log(data);
-  sendAjax("/dashboard/ajax/","POST",temp,data);
+  sendAjax("/dashboard/ajax/","POST", formResponse,data);
   closeModal();
 }
 
@@ -225,12 +249,18 @@ function submitCreateSpeciesForm(){
 
 function submitCreateGroupForm(){
 	var data = {
-		"createGroup" : "true",
 		"groupName" : $('#groupName').val(),
 		"groupSize" : $('#groupSize').val(),
 		"groupSpecies" : $('#groupSpeciesName option:selected').val(),
 		"groupStart" : $("#startDate").val()
 	};
+	if( formAction === 'edit'){
+		data['editGroup'] = "true";
+		data['groupId'] = editId;
+	}
+	else{
+		data['createGroup'] = "true";
+	}
 	return data;
 }
 
@@ -249,10 +279,12 @@ function submitStagesForm(){
   return data;
 }
 
-function temp(json){
-  if(json.createGroup && json.createGroup === 'true'){
-	  $('#calendar').fullCalendar('refetchEvents');
-  }
+function formResponse(json){
+	//console.log(json);
+	if( (json.createGroup && json.createGroup === 'true' )
+	  || ( json.updateGroup && json.updateGroup === 'true') ){
+		$('#calendar').fullCalendar('refetchEvents');
+	}
 }
 
 function sendAjax(url,type,successCall,data){
