@@ -39,7 +39,6 @@ $(document).ready(function(){
 });
 
 function getEvents(start, end, timezone, callback){
-
 	$.ajax({
 		"url": "/livestocktracker/dashboard/ajax/",
 		"type": "POST",
