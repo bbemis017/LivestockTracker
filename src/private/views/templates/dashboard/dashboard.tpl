@@ -45,7 +45,7 @@
 
 			<!--Side bar -->
 			<div class=" collapse navbar-collapse">
-				<ul class="nav navbar-nav side-nav">z
+				<ul class="nav navbar-nav side-nav">
 					<li id="dashboard">
 						<a href="{$HOST}/dashboard"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
 					</li>

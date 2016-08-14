@@ -3,6 +3,8 @@
 $IP = $_SERVER['HTTP_HOST'];
 $HOST = "http://" . $IP . '/livestocktracker';
 
+$VERSION = '0.3.0 Alpha';
+
 //directories
 $ROOT_DIR = __DIR__ . "/../";
 $CONFIG_DIR = $ROOT_DIR . "config/";

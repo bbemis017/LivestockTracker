@@ -6,8 +6,8 @@
 		<div class="col-sm-6 col-sm-offset-2 account-info">
 			<div class="row">
 				<div class="titles col-xs-3">
-					<span>username:</span>
-					<span>email:</span>
+					<span>Username:</span>
+					<span>Email:</span>
 				</div>
 				<div class="col-xs-2">
 					<span>{$role->account->username}</span>
@@ -27,6 +27,11 @@
 					<td>{$AUTH[$role->auth]}</td>
 				</tr>
 			</table>
+			<br/><br/><br/>
+
+			<div>
+				<span>Software Version: {$VERSION}</span>
+			</div>
 		</div>
 	</div>
 </div>
