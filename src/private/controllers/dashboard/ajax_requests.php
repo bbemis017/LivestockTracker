@@ -1,5 +1,4 @@
 <?php
-
   if( !isset($_POST['ajax_request']) || $_POST['ajax_request'] !== 'true'){
     $data = array('error' => 'Not an ajax request');
     json_response($data);
@@ -49,8 +48,15 @@ if( isset( $_POST['selectStage'] ) && $_POST['selectStage'] === 'true' ){
 }
 if( isset( $_POST['createGroup'] ) && $_POST['createGroup'] === 'true'){
 	$data = array_merge( $data ,
-		createGroup( $_POST['groupName'], $_POST['groupSize'], $_POST['groupStart'], $_POST['groupSpecies'], $role )
+		createGroup( $_POST['groupName'], $_POST['groupSize'], $_POST['groupStart'], $_POST['groupSpecies'], $role ) );
+}
+if( isset( $_POST['editGroup']) && $_POST['editGroup'] === 'true'){
+	$data = array_merge( $data,
+		updateGroup( $_POST['groupId'], $_POST['groupName'], $_POST['groupSize'], $_POST['groupStart'], $_POST['groupSpecies'], $role )
 	);
+}
+if( isset( $_POST['getGroup'] ) && $_POST['getGroup'] === 'true'){
+	$data = array_merge( $data, getGroup($_POST['groupId'], $role) );
 }
 
 
@@ -161,14 +167,42 @@ if( isset( $_POST['createGroup'] ) && $_POST['createGroup'] === 'true'){
 
 			  $title = $group_name . ': '. $stages[$j]['stage_name'] . ': ' . $groups[$i]['group_count'];
 
-			  $event = array('title' => $title, 'date_start' => $stage_start, 'date_end' => $stage_end );
+			  $event = array('id' => $groups[$i]['group_id'], 'title' => $title, 'date_start' => $stage_start, 'date_end' => $stage_end );
 			  array_push( $events, $event );
 
 		  }
-
-
 	  }
 
 	  return array('result' => $events );
+  }
+
+  function getGroup($id, $role){
+
+	  $group = Group::getGroup($id,$role->org);
+	  if( $group === false){
+		  return array('error' => 'true', 'getGroup' => 'failure');
+	  }
+	  else{
+		  return array('groupId' => $group->id, 'groupName' => $group->name, 'groupStart' => $group->start,
+		   'groupSize' => $group->count, 'groupSpecies' => $group->species);
+	  }
+  }
+
+  function updateGroup($id, $name, $size, $start, $speciesId, $role){
+
+	  $stageList = StageOrder::getStages( $speciesId, $role->org );
+
+	  $groupLength = 0;
+	  for( $i = 0; $i < count( $stageList ); $i++){
+		  $groupLength += intval( $stageList[$i]['stage_length'] );
+	  }
+
+	  $group = Group::update($id,$name,$start,$groupLength, $size, $speciesId, $role->org);
+	  if( $group === false){
+		  return array('error' => 'true', 'updateGroup' => 'failure');
+	  }
+	  else {
+		  return array('updateGroup' => 'true');
+	  }
   }
 ?>
