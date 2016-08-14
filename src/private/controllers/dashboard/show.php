@@ -28,6 +28,7 @@ $smarty->assign('account', $account);
 $smarty->assign('role',$role);
 $smarty->assign('HOST',$HOST);
 $smarty->assign('AUTH',$AUTH);
+$smarty->assign('VERSION',$VERSION);
 
 $smarty->display('dashboard/dashboard.tpl');
 ?>
