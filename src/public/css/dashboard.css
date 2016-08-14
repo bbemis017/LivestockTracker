@@ -245,3 +245,13 @@ ul.alert-dropdown {
 button#createStage {
     margin-top: 8px;
 }
+
+/*settings*/
+.account-info span {
+	display: block;
+	font-size: 18px;
+}
+
+.account-info .titles span {
+	float: right;
+}

@@ -47,13 +47,13 @@
 			<div class=" collapse navbar-collapse">
 				<ul class="nav navbar-nav side-nav">z
 					<li id="dashboard">
-						<a href="/accounts/profile"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
+						<a href="{$HOST}/dashboard"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
+					</li>
+					<li id="settings">
+						<a href="{$HOST}/dashboard?page=settings"><i class="fa fa-fw fa-bar-chart-o"></i> Settings</a>
 					</li>
 					<li id="sites">
-						<a href="/accounts/sites"><i class="fa fa-fw fa-bar-chart-o"></i> Settings</a>
-					</li>
-					<li id="sites">
-						<a href="/accounts/sites"><i class="fa fa-fw fa-bar-chart-o"></i> Bugs</a>
+						<a href="https://github.com/bbemis017/LivestockTracker/issues" target="_blank"><i class="fa fa-fw fa-bar-chart-o"></i> Bugs</a>
 					</li>
 				</ul>
 			</div>	<!-- end side bar -->
