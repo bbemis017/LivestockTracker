@@ -8,6 +8,7 @@ $VERSION = '0.3.0 Alpha';
 //directories
 $ROOT_DIR = __DIR__ . "/../";
 $CONFIG_DIR = $ROOT_DIR . "config/";
+$SCRIPTS = $ROOT_DIR . "scripts/";
 $SRC_DIR = $ROOT_DIR . "src/";
 $CONTROLLERS = $SRC_DIR . "private/controllers/";
 $MODELS = $SRC_DIR . "private/models/";
