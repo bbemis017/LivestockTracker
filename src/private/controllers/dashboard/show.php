@@ -1,5 +1,5 @@
 <?php
-require $MODELS.'db_connect.php';
+//require $MODELS.'db_connect.php';
 require $MODELS.'account/Account.php';
 require $MODELS.'role/Role.php';
 
