@@ -51,6 +51,7 @@ echo shell_exec("git reset --hard;git checkout master; git pull origin master");
 //update database
 echo shell_exec("sh " . $SCRIPTS . "db_setup.sh");
 $response['deployed'] = true;
+echo date("Y/m/d h:i:sa");
 
 json_response($response);
 ?>
