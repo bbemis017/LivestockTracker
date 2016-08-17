@@ -1,6 +1,10 @@
 <?php
 
 require "../config/constants.php";
+require $MODELS.'db_connect.php';
+require $MODELS.'modules/Module.php';
+$MODULES = Module::getModules();
+require $SRC_DIR.'private/modules/Utilities.php';
 
 require "/usr/lib/php/7.0/Smarty/Smarty.class.php";
 
@@ -33,4 +37,5 @@ else{
   //display 404 page
   echo "404";
 }
+db_close();
 ?>

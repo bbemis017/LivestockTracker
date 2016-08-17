@@ -9,6 +9,10 @@
 		"/dashboard/ajax/" => "dashboard/ajax_requests.php"
 	);
 
+	if( active_module("Auto_Deploy") ){
+		$ROUTE["/autodeploy911live/deploy"] = "../modules/Auto_Deploy/deploy.php";
+	}
+
 	function redirect_url($str){
 		global $HOST;
 		header('Location: ' . $HOST . $str);
