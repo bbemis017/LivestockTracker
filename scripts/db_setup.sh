@@ -1,12 +1,12 @@
-stty -echo
-printf "Mysql root password: "
-read PASSWORD
-stty echo
+#stty -echo
+#printf "Mysql root password: "
+#read PASSWORD
+#stty echo
 echo ""
 db="LivestockTracker"
 
 echo "setup:\n"
-mysql -u root "-p$PASSWORD" < "../config/db_setup.sql"
+mysql -u local_access < "../config/db_setup.sql"
 
 cd ../src/private/models
 

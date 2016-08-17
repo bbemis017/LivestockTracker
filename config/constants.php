@@ -13,6 +13,7 @@ $SRC_DIR = $ROOT_DIR . "src/";
 $CONTROLLERS = $SRC_DIR . "private/controllers/";
 $MODELS = $SRC_DIR . "private/models/";
 $VIEWS = $SRC_DIR . "private/views/";
+$MODULE_DIR = $SRC_DIR . "private/modules/";
 
 //authorization
 $AUTH = array(
