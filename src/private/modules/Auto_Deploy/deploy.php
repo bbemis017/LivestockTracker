@@ -18,8 +18,8 @@ $secret_key = json_decode( file_get_contents( $file ), true );
 $payload = json_decode( file_get_contents('php://input'), true );
 
 //verify payload exists
-if( !isset($payload['repository']['full_name']) || !isset($payload['hook']['config']['secret'])
- || !isset($payload['sender']['login']) || !isset($_SERVER['HTTP_X_HUB_SIGNATURE'])){
+if( !isset($payload['repository']['full_name']) || !isset($payload['sender']['login'])
+	|| !isset($_SERVER['HTTP_X_HUB_SIGNATURE'])){
 
 	$response['error'] = "unknown message";
 	json_response($response);
