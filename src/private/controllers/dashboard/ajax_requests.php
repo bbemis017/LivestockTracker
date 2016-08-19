@@ -142,6 +142,18 @@ if( isset( $_POST['getGroup'] ) && $_POST['getGroup'] === 'true'){
 	}
   }
 
+  function randomColor(){
+	$color='rgb(';
+	for($i = 0; $i < 3; $i++){
+		$color .= rand(0,255);
+		if($i < 2){
+			$color .= ',';
+		}
+	}
+	$color .= ')';
+	return $color;
+  }
+
   function calendarData($start,$end,$role){
 
 	  $events = array();
@@ -151,6 +163,7 @@ if( isset( $_POST['getGroup'] ) && $_POST['getGroup'] === 'true'){
 
 		  $group_start = $groups[$i]['group_start'];
 		  $group_name = $groups[$i]['group_name'];
+		  $group_color = randomColor();
 
 		  $stages = StageOrder::getStages( intval( $groups[$i]['group_species_id'] ), $role->org );
 
@@ -167,7 +180,8 @@ if( isset( $_POST['getGroup'] ) && $_POST['getGroup'] === 'true'){
 
 			  $title = $group_name . ': '. $stages[$j]['stage_name'] . ': ' . $groups[$i]['group_count'];
 
-			  $event = array('id' => $groups[$i]['group_id'], 'title' => $title, 'date_start' => $stage_start, 'date_end' => $stage_end );
+			  $event = array('id' => $groups[$i]['group_id'], 'title' => $title,
+			   'date_start' => $stage_start, 'date_end' => $stage_end, 'color' => $group_color);
 			  array_push( $events, $event );
 
 		  }

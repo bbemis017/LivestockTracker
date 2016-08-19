@@ -61,6 +61,18 @@ function editEvent(calEvent, jsEvent, view){
 	);
 }
 
+function randomColor(){
+	var code = "rgb(";
+	for(var i = 0; i < 3; i++){
+		code += Math.floor( Math.random() * 255 );
+		if( i < 2){
+			code += ",";
+		}
+	}
+	code += ")";
+	return code;
+}
+
 function getEvents(start, end, timezone, callback){
 	$.ajax({
 		"url": "/livestocktracker/dashboard/ajax/",
@@ -73,6 +85,7 @@ function getEvents(start, end, timezone, callback){
 			"calendar_end" : end.format()
 		},
 		"success": function(doc) {
+			console.log(doc);
 			var events = [];
 			if(doc.result){
 				$.map( doc.result, function( r ) {
@@ -81,7 +94,8 @@ function getEvents(start, end, timezone, callback){
 						"title": r.title,
 						"start": r.date_start,
 						"end": r.date_end,
-						"allDay": 'true'
+						"allDay": 'true',
+						"color" : r.color
 					});
 				});
 			}
