@@ -1,3 +1,3 @@
 <?php
-$DATABASE = 'sqlite_connect.php';
+$DATABASE = 'mysql_connect.php';
 ?>

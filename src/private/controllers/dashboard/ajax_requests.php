@@ -4,7 +4,6 @@
     json_response($data);
   }
 
-  //require $MODELS.'db_connect.php';
   require $MODELS.'account/Account.php';
   require_once $MODELS.'role/Role.php';
   require_once $MODELS.'stage/Stage.php';

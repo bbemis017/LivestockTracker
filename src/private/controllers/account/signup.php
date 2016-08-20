@@ -5,7 +5,6 @@ if(  $_SERVER['REQUEST_METHOD'] === 'POST' ){
   if( isset( $_POST['username'] ) && isset( $_POST['password'] ) && isset( $_POST['email'] )
       && isset( $_POST['password2'] ) && isset( $_POST['organization'] ) ) {
 
-    //require $MODELS.'db_connect.php';
     require $MODELS.'account/Account.php';
     require $MODELS.'organization/Organization.php';
     require $MODELS.'role/Role.php';
