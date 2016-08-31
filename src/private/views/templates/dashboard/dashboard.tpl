@@ -37,7 +37,7 @@
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {$account->username} <b class="caret"></b></a>
 					<ul class="dropdown-menu">
 						<li>
-							<a href="/accounts/signout"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+							<a href="{$HOST}/account/signout"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
 						</li>
 					</ul>
 				</li>
