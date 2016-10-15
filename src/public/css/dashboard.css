@@ -253,5 +253,5 @@ button#createStage {
 }
 
 .account-info .titles span {
-	float: right;
+	display: block;
 }
