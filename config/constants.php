@@ -26,10 +26,4 @@ $AUTH = array(
 //method to use to connect to database
 $DATABASE = "mysql_connect.php";
 
-//local settings for non-production
-if( isset($LOCAL_CONFIG) ){
-  require 'local_constants.php';
-}
-
-
 ?>

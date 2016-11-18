@@ -1,7 +1,7 @@
 <?php
 
 require "../config/constants.php";
-require $MODELS.'db_connect.php';
+require $MODELS.$DATABASE;
 require $MODELS.'modules/Module.php';
 $MODULES = Module::getModules();
 require $SRC_DIR.'private/modules/Utilities.php';

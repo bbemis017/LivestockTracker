@@ -81,7 +81,8 @@ function getEvents(start, end, timezone, callback){
 						"title": r.title,
 						"start": r.date_start,
 						"end": r.date_end,
-						"allDay": 'true'
+						"allDay": 'true',
+						"color" : r.color
 					});
 				});
 			}

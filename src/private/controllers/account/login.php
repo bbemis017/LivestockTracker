@@ -2,7 +2,6 @@
 	//if request is post than a user is trying to login
 	if ( $_SERVER['REQUEST_METHOD'] === 'POST' ){
 
-    //require $MODELS.'db_connect.php';
     require $MODELS.'account/Account.php';
 
 		if( isset( $_POST['username'] ) && isset( $_POST['password'] ) ){
