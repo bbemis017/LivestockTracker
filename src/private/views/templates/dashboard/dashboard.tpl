@@ -68,6 +68,9 @@
 
 		<div class="container-fluid dash-content-block">
 			<div class="row">
+				{if $dash_modal != '' }
+					{include file=$dash_modal}
+				{/if}
 				{if $dash_content != ''}
 					{include file=$dash_content}
 				{/if}
@@ -78,6 +81,8 @@
 		<!-- scripts -->
 
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-		<script src='{$HOST}/public/js/calendar.js'></script>
+		{if $show_calendar == true}
+			<script src='{$HOST}/public/js/calendar.js'></script>
+		{/if}
 	</body>
 </html>
