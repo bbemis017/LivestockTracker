@@ -49,6 +49,12 @@
 					<li id="dashboard">
 						<a href="{$HOST}/dashboard"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
 					</li>
+					<li id="allSpecies">
+						<a href="{$HOST}/dashboard?page=allSpecies"><i class="fa fa-fw fa-dashboard"></i> &emsp; Species</a>
+					</li>
+					<li id="allStages">
+						<a href="{$HOST}/dashboard?page=allStages"><i class="fa fa-fw fa-dashboard"></i> &emsp; Stages</a>
+					</li>
 					<li id="settings">
 						<a href="{$HOST}/dashboard?page=settings"><i class="fa fa-fw fa-bar-chart-o"></i> Settings</a>
 					</li>

@@ -16,7 +16,12 @@ $page_title = "dashboard";
 if( isset($_GET['page']) && $_GET['page'] === "settings"){
 	$dash_content = 'account/settings.tpl';
 }
-
+else if( isset($_GET['page']) && $_GET['page'] === "allSpecies"){
+	$dash_content = 'dashboard/allSpecies.tpl';
+}
+else if( isset($_GET['page']) && $_GET['page'] === "allStages" ){
+	$dash_content = 'dashboard/allStages.tpl';
+}
 
 db_close();
 
