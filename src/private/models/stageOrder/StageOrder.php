@@ -73,6 +73,16 @@ class StageOrder {
 		}
 	}
 
+	public static function getGroupLength($speciesId, $org){
+		$stageList = StageOrder::getStages( $speciesId, $org);
+
+		$groupLength = 0;
+		for($i = 0; $i < count( $stageList ); $i++){
+			$groupLength += intval( $stageList[$i]['stage_length'] );
+		}
+		return $groupLength;
+	}
+
   public static function getStages( $speciesId, $org){
 	$sql = sprintf(
 	"SELECT stage_order.stage_order_rank, stage.stage_id, stage.stage_name, stage.stage_length

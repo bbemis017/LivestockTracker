@@ -135,7 +135,6 @@ function submitForm(){
   }
   //console.log(data);
   sendAjax("/dashboard/ajax/","POST", formResponse,data);
-  closeModal();
 }
 
 function submitCreateStageForm(){
@@ -201,6 +200,10 @@ function formResponse(json){
 	  || ( json.updateGroup && json.updateGroup === 'true') ){
 		$('#calendar').fullCalendar('refetchEvents');
 	}
+	if( formType === 'Species' && formAction === 'edit'){
+		updateSpecies();
+	}
+	closeModal();
 }
 
 function sendAjax(url,type,successCall,data){
@@ -285,5 +288,4 @@ function editSpecies(speciesId, speciesName){
 	editId = speciesId;
 	createSpeciesForm();
 	modal.modal('show');
-	//TODO: update page after edit
 }

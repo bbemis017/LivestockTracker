@@ -108,7 +108,7 @@ if( isset( $_POST['getGroup'] ) && $_POST['getGroup'] === 'true'){
   }
 
 	function updateSpecies($id, $name,$stages,$role){
-		//TODO: should also update group end_dates
+
 		$stages = json_decode($stages, true);
 
 		$species = Species::updateSpecies($id, $name, $role->org);
@@ -121,8 +121,10 @@ if( isset( $_POST['getGroup'] ) && $_POST['getGroup'] === 'true'){
 			$order = StageOrder::updateOrders($species,$stages,$role->org);
 
 			if( $order === true){
+				$group_results = Group::updateEndDates($id,$role->org);
+
 				return array('updatedSpecies' => 'success', 'speciesId' => $species->id,
-					'specisName' => $species->name, 'stages' => json_encode($stages) );
+					'speciesName' => $species->name, 'stages' => json_encode($stages), 'groupUpdateSuccess' => json_encode($group_results) );
 			}
 			else{
 				return array('error' => 'true', 'updateStageOrder' => 'failure', 'warning' => 'data may have been lost');

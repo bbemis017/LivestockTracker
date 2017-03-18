@@ -1,5 +1,10 @@
 loadSpecies();
 
+function updateSpecies(){
+	$('.allSpecies tr.species-row').remove();
+	loadSpecies();
+}
+
 function loadSpecies(){
 	data = { "getSpecies" : 'true' };
 	sendAjax("/dashboard/ajax/","POST",function(json){
@@ -13,7 +18,7 @@ function loadSpecies(){
 function addSpeciesRow(species){
 	var lastTr = $('#speciesTable tr:last');
 	var parameters = '(' + species['species_id'] + ',"' + species['species_name'] + '")';
-	var html = "<tr>" +
+	var html = "<tr class='species-row'>" +
 					"<td>" + species['species_name'] + "</td>" +
 					"<td>" +
 						"<button type='button' class='btn btn-warning' onclick='editSpecies" + parameters + ";\'>Edit</button>" +
