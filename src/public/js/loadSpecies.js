@@ -22,7 +22,6 @@ function addSpeciesRow(species){
 					"<td>" + species['species_name'] + "</td>" +
 					"<td>" +
 						"<button type='button' class='btn btn-warning' onclick='editSpecies" + parameters + ";\'>Edit</button>" +
-						"<button type='button' class='btn btn-danger'>Delete</button>" +
 					"</td>" +
 				"</tr>";
 	lastTr.after(html);

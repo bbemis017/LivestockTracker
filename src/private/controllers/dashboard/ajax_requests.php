@@ -42,6 +42,9 @@ if( isset($_POST['getSpecies']) && $_POST['getSpecies'] === 'true'){
 if( isset($_POST['createStage']) && $_POST['createStage'] === 'true') {
 	$data = array_merge( $data , createStage($_POST['stageName'], $_POST['stageLength'], $role) );
 }
+if( isset($_POST['editStage']) && $_POST['editStage'] === 'true') {
+	$data = array_merge( $data, editStage($_POST['stage_id'],$_POST['stageName'], $_POST['stageLength'], $role) );
+}
 if( isset( $_POST['selectStage'] ) && $_POST['selectStage'] === 'true' ){
 	if( isset( $_POST['createSpecies'] ) && $_POST['createSpecies'] === 'true') {
 			//json_response(array('selectStages' => 'yayyyy'));
@@ -81,6 +84,40 @@ if( isset( $_POST['getGroup'] ) && $_POST['getGroup'] === 'true'){
        'stageName' => $stage->name, 'stageLength' => $stage->length);
     }
   }
+
+function editStage($id,$name,$length,$role){
+
+	$stage = Stage::updateStage($id,$name,$length,$role->org);
+
+	if( $stage === false){
+		return array('error' => 'true', 'updateStageError' => 'editStage cred');
+	} else {
+
+		//get species that use this stage
+		$related_species = StageOrder::getSpecies($stage->id,$role->org);
+
+		if( $related_species === false){
+			return array('error' => 'true', 'getSpeciesError' => 'unknown');
+		} else {
+
+			//update the end dates for any group that had a modified stage
+			for($i = 0; $i < count($related_species); $i++){
+
+				$result = Group::updateEndDates($related_species[$i]['stage_order_species_id'],$role->org);
+
+				//something went wrong
+				if( $result == false){
+					return array('error' => 'true', 'updateEndDatesError' => 'unknown');
+				}
+
+			}
+
+			return array('editStage' => 'success', 'stageId' => $stage->id,
+				'stageName' => $stage->name, 'stageLength' => $stage->length);
+		}
+
+	}
+}
 
   function createSpecies($name,$stages,$role){
 

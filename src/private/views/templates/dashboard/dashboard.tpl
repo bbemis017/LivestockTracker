@@ -86,6 +86,8 @@
 			<script src='{$HOST}/public/js/calendar.js'></script>
 		{elseif $page_title == 'Species'}
 			<script src='{$HOST}/public/js/loadSpecies.js'></script>
+		{elseif $page_title == 'Stages'}
+			<script src='{$HOST}/public/js/loadStages.js'></script>
 		{/if}
 	</body>
 </html>

@@ -36,6 +36,7 @@ function deleteSelectStage(element){
 
 function newStageClick(){
     $('#newStage').hide();
+	$('#cancelStageBtn').show();
     $('#modalCreateBtn').prop('disabled',true);
     createStageForm();
 }
@@ -120,12 +121,13 @@ function selectStagesForm(){
 
 function createStageForm(){
 
-  //form setup and display
-  openForms.push( getFormInfo('#createStage',submitCreateStageForm) );
-  $('#createStage').show();
-  if( formType === 'Stage'){
-    $('#createStageBtn').hide();
-  }
+	//form setup and display
+	openForms.push( getFormInfo('#createStage',submitCreateStageForm) );
+	$('#createStage').show();
+	if( formType === 'Stage'){
+		$('#createStageBtn').hide();
+		$('#cancelStageBtn').hide();
+	}
 }
 
 function submitForm(){
@@ -138,13 +140,20 @@ function submitForm(){
 }
 
 function submitCreateStageForm(){
-  var data = {
-    "createStage" : "true",
-    "stageName" : $('#stageName').val(),
-    "stageLength" : $('#stageLength').val()
-  };
+	var data = {
+		"stageName" : $('#stageName').val(),
+		"stageLength" : $('#stageLength').val()
+	};
 
-  return data;
+	if( formAction === 'edit'){
+		data['editStage'] = 'true';
+		data['stage_id'] = editId;
+	}
+	else{
+		data['createStage'] = 'true';
+	}
+
+	return data;
 }
 
 function submitCreateSpeciesForm(){
