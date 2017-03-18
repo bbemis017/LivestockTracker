@@ -71,7 +71,7 @@
 				{if $dash_modal != '' }
 					{include file=$dash_modal}
 				{/if}
-				{if $dash_content != ''}
+				{if $dash_content != 'Dashboard'}
 					{include file=$dash_content}
 				{/if}
 			</div>
@@ -81,8 +81,11 @@
 		<!-- scripts -->
 
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-		{if $show_calendar == true}
+		<script src='{$HOST}/public/js/modal.js'></script>
+		{if $page_title == 'Dashboard'}
 			<script src='{$HOST}/public/js/calendar.js'></script>
+		{elseif $page_title == 'Species'}
+			<script src='{$HOST}/public/js/loadSpecies.js'></script>
 		{/if}
 	</body>
 </html>

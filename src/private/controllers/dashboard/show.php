@@ -12,18 +12,21 @@ if( $role === false)
 
 $modal_content = 'dashboard/modal.tpl';
 $dash_content = 'dashboard/calendar.tpl';
-$page_title = "dashboard";
+$page_title = "Dashboard";
 $show_calendar = true;
 
 if( isset($_GET['page']) && $_GET['page'] === "settings"){
+	$page_title = "Settings";
 	$dash_content = 'account/settings.tpl';
 	$show_calendar = false;
 }
 else if( isset($_GET['page']) && $_GET['page'] === "allSpecies"){
+	$page_title = "Species";
 	$dash_content = 'dashboard/allSpecies.tpl';
 	$show_calendar = false;
 }
 else if( isset($_GET['page']) && $_GET['page'] === "allStages" ){
+	$page_title = "Stages";
 	$dash_content = 'dashboard/allStages.tpl';
 	$show_calendar = false;
 }

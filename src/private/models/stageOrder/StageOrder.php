@@ -56,6 +56,23 @@ class StageOrder {
 
   }
 
+	public static function updateOrders($species,$rankList,$org){
+		$sql = sprintf("DELETE FROM
+				`stage_order`
+			WHERE
+				`stage_order_species_id`='%d' AND `stage_order_org_id`='%d'",
+			$species->id,
+			$org->id
+		);
+		$result = query_first($sql);
+		if($result === true){
+			return StageOrder::createOrders($species,$rankList,$org);
+		}
+		else{
+			return false;
+		}
+	}
+
   public static function getStages( $speciesId, $org){
 	$sql = sprintf(
 	"SELECT stage_order.stage_order_rank, stage.stage_id, stage.stage_name, stage.stage_length
