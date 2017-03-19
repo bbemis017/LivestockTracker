@@ -26,3 +26,12 @@ function addSpeciesRow(species){
 				"</tr>";
 	lastTr.after(html);
 }
+
+function editSpecies(speciesId, speciesName){
+	$('#speciesName').val(speciesName);
+	formType = 'Species';
+	formAction = 'edit';
+	editId = speciesId;
+	createSpeciesForm();
+	modal.modal('show');
+}

@@ -44,17 +44,26 @@
 			</ul>
 
 			<!--Side bar -->
-			<div class=" collapse navbar-collapse">
+			<div class="navbar-collapse navbar-ex1-collapse collapse in">
 				<ul class="nav navbar-nav side-nav">
 					<li id="dashboard">
-						<a href="{$HOST}/dashboard"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
+						<a href="javascript:;" data-toggle="collapse" data-target="#content">
+							<i class="fa fa-fw fa-dashboard"></i> dashboard
+							<span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+						</a>
+						<ul id="content" class="collapse">
+							<li>
+								<a href="{$HOST}/dashboard"><i class="fa fa-fw fa-dashboard"></i> &emsp; Calendar</a>
+							</li>
+							<li id="allSpecies">
+								<a href="{$HOST}/dashboard?page=allSpecies"><i class="fa fa-fw fa-dashboard"></i> &emsp; Species</a>
+							</li>
+							<li id="allStages">
+								<a href="{$HOST}/dashboard?page=allStages"><i class="fa fa-fw fa-dashboard"></i> &emsp; Stages</a>
+							</li>
+						</ul>
 					</li>
-					<li id="allSpecies">
-						<a href="{$HOST}/dashboard?page=allSpecies"><i class="fa fa-fw fa-dashboard"></i> &emsp; Species</a>
-					</li>
-					<li id="allStages">
-						<a href="{$HOST}/dashboard?page=allStages"><i class="fa fa-fw fa-dashboard"></i> &emsp; Stages</a>
-					</li>
+
 					<li id="settings">
 						<a href="{$HOST}/dashboard?page=settings"><i class="fa fa-fw fa-bar-chart-o"></i> Settings</a>
 					</li>

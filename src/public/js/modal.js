@@ -209,8 +209,12 @@ function formResponse(json){
 	  || ( json.updateGroup && json.updateGroup === 'true') ){
 		$('#calendar').fullCalendar('refetchEvents');
 	}
+
 	if( formType === 'Species' && formAction === 'edit'){
 		updateSpecies();
+	}
+	else if( formType === 'Stage' && formAction === 'edit'){
+		updateStages();
 	}
 	closeModal();
 }
@@ -288,13 +292,4 @@ function updateSpeciesList(){
 	},
 	{ "getSpecies" : "true" }
 	);
-}
-
-function editSpecies(speciesId, speciesName){
-	$('#speciesName').val(speciesName);
-	formType = 'Species';
-	formAction = 'edit';
-	editId = speciesId;
-	createSpeciesForm();
-	modal.modal('show');
 }

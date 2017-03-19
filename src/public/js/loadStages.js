@@ -1,5 +1,10 @@
 loadStages();
 
+function updateStages(){
+	$('.allStages tr.stage-row').remove();
+	loadStages();
+}
+
 function loadStages(){
 	data = { 'getStages' : 'true' };
 	sendAjax("/dashboard/ajax/","POST",function(json){
