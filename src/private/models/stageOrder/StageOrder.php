@@ -56,6 +56,54 @@ class StageOrder {
 
   }
 
+	public static function updateOrders($species,$rankList,$org){
+		$sql = sprintf("DELETE FROM
+				`stage_order`
+			WHERE
+				`stage_order_species_id`='%d' AND `stage_order_org_id`='%d'",
+			$species->id,
+			$org->id
+		);
+		$result = query_first($sql);
+		if($result === true){
+			return StageOrder::createOrders($species,$rankList,$org);
+		}
+		else{
+			return false;
+		}
+	}
+
+	public static function getGroupLength($speciesId, $org){
+		$stageList = StageOrder::getStages( $speciesId, $org);
+
+		$groupLength = 0;
+		for($i = 0; $i < count( $stageList ); $i++){
+			$groupLength += intval( $stageList[$i]['stage_length'] );
+		}
+		return $groupLength;
+	}
+
+	/**
+	 * Get all species that have stageId
+	 * @param stageId stage that we are matching
+	 */
+	public static function getSpecies($stageId, $org){
+		$sql = sprintf(
+			"SELECT DISTINCT `stage_order_species_id`
+			FROM `stage_order`
+			WHERE `stage_order_stage_id`='%d' AND `stage_order_org_id`='%d';",
+			$stageId,
+			$org->id
+		);
+
+		$result = query_array($sql);
+		if( $result === false){
+			return false;
+		} else {
+			return $result;
+		}
+	}
+
   public static function getStages( $speciesId, $org){
 	$sql = sprintf(
 	"SELECT stage_order.stage_order_rank, stage.stage_id, stage.stage_name, stage.stage_length
