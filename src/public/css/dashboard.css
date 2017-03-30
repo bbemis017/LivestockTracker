@@ -52,6 +52,10 @@ body {
     float: left;
 }
 
+.navbar-inverse .navbar-nav>ul>a {
+	color: #9d9d9d;
+}
+
 .top-nav>li>a {
     padding-top: 15px;
     padding-bottom: 15px;
@@ -143,14 +147,14 @@ ul.alert-dropdown {
     padding: 0;
 }
 
-.side-nav>li>a {
+.side-nav>li>ul>li>a {
     display: block;
     padding: 10px 15px 10px 38px;
     text-decoration: none;
     color: #999;
 }
 
-.side-nav>li>a:hover {
+.side-nav>li>ul>li>a:hover {
     color: #fff;
 }
 
@@ -253,5 +257,5 @@ button#createStage {
 }
 
 .account-info .titles span {
-	float: right;
+	display: block;
 }

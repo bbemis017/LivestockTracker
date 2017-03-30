@@ -4,7 +4,6 @@
     json_response($data);
   }
 
-  //require $MODELS.'db_connect.php';
   require $MODELS.'account/Account.php';
   require_once $MODELS.'role/Role.php';
   require_once $MODELS.'stage/Stage.php';
@@ -34,16 +33,25 @@ if( isset($_POST['calendarData']) && $_POST['calendarData'] === 'true' ){
 if( isset($_POST['getStages']) && $_POST['getStages'] === 'true'){
 	$data = array_merge($data, getStages($role) );
 }
+if( isset( $_POST['getSpeciesStageList'] ) && $_POST['getSpeciesStageList'] === 'true'){
+	$data = array_merge($data, getSpeciesStages($role,$_POST['speciesId']));
+}
 if( isset($_POST['getSpecies']) && $_POST['getSpecies'] === 'true'){
 	$data = array_merge($data, getSpecies($role) );
 }
 if( isset($_POST['createStage']) && $_POST['createStage'] === 'true') {
 	$data = array_merge( $data , createStage($_POST['stageName'], $_POST['stageLength'], $role) );
 }
+if( isset($_POST['editStage']) && $_POST['editStage'] === 'true') {
+	$data = array_merge( $data, editStage($_POST['stage_id'],$_POST['stageName'], $_POST['stageLength'], $role) );
+}
 if( isset( $_POST['selectStage'] ) && $_POST['selectStage'] === 'true' ){
 	if( isset( $_POST['createSpecies'] ) && $_POST['createSpecies'] === 'true') {
 			//json_response(array('selectStages' => 'yayyyy'));
 			$data = array_merge($data, createSpecies($_POST['speciesName'], $_POST['stages'], $role ) );
+	}
+	else if( isset( $_POST['editSpecies'] ) && $_POST['editSpecies'] === 'true') {
+			$data = array_merge($data, updateSpecies($_POST['speciesId'], $_POST['speciesName'], $_POST['stages'], $role) );
 	}
 }
 if( isset( $_POST['createGroup'] ) && $_POST['createGroup'] === 'true'){
@@ -77,6 +85,40 @@ if( isset( $_POST['getGroup'] ) && $_POST['getGroup'] === 'true'){
     }
   }
 
+function editStage($id,$name,$length,$role){
+
+	$stage = Stage::updateStage($id,$name,$length,$role->org);
+
+	if( $stage === false){
+		return array('error' => 'true', 'updateStageError' => 'editStage cred');
+	} else {
+
+		//get species that use this stage
+		$related_species = StageOrder::getSpecies($stage->id,$role->org);
+
+		if( $related_species === false){
+			return array('error' => 'true', 'getSpeciesError' => 'unknown');
+		} else {
+
+			//update the end dates for any group that had a modified stage
+			for($i = 0; $i < count($related_species); $i++){
+
+				$result = Group::updateEndDates($related_species[$i]['stage_order_species_id'],$role->org);
+
+				//something went wrong
+				if( $result == false){
+					return array('error' => 'true', 'updateEndDatesError' => 'unknown');
+				}
+
+			}
+
+			return array('editStage' => 'success', 'stageId' => $stage->id,
+				'stageName' => $stage->name, 'stageLength' => $stage->length);
+		}
+
+	}
+}
+
   function createSpecies($name,$stages,$role){
 
 	  $stages = json_decode($stages, true);
@@ -101,6 +143,31 @@ if( isset( $_POST['getGroup'] ) && $_POST['getGroup'] === 'true'){
 	  }
 
   }
+
+	function updateSpecies($id, $name,$stages,$role){
+
+		$stages = json_decode($stages, true);
+
+		$species = Species::updateSpecies($id, $name, $role->org);
+
+		if( $species == false){
+			return array('error' => 'true', 'updateSpeciesError' => 'failure');
+		}
+		else {
+
+			$order = StageOrder::updateOrders($species,$stages,$role->org);
+
+			if( $order === true){
+				$group_results = Group::updateEndDates($id,$role->org);
+
+				return array('updatedSpecies' => 'success', 'speciesId' => $species->id,
+					'speciesName' => $species->name, 'stages' => json_encode($stages), 'groupUpdateSuccess' => json_encode($group_results) );
+			}
+			else{
+				return array('error' => 'true', 'updateStageOrder' => 'failure', 'warning' => 'data may have been lost');
+			}
+		}
+	}
 
   function createGroup($name, $size, $start, $speciesId, $role){
 
@@ -132,6 +199,16 @@ if( isset( $_POST['getGroup'] ) && $_POST['getGroup'] === 'true'){
     }
   }
 
+	function getSpeciesStages($role,$speciesId){
+		$stageList = StageOrder::getStages($speciesId, $role->org);
+		if( $stageList === false){
+			return array('error' => 'true', 'getSpeciesStagesError' => 'failure');
+		}
+		else {
+			return array('speciesStageList' => json_encode( $stageList) );
+		}
+	}
+
   function getSpecies($role){
 	$speciesList = Species::getSpeciesList($role->org);
 	if( $speciesList === false){
@@ -140,6 +217,18 @@ if( isset( $_POST['getGroup'] ) && $_POST['getGroup'] === 'true'){
 	else{
 		return array('speciesList' => json_encode( $speciesList ) );
 	}
+  }
+
+  function randomColor(){
+	$color='rgb(';
+	for($i = 0; $i < 3; $i++){
+		$color .= rand(0,255);
+		if($i < 2){
+			$color .= ',';
+		}
+	}
+	$color .= ')';
+	return $color;
   }
 
   function calendarData($start,$end,$role){
@@ -151,6 +240,7 @@ if( isset( $_POST['getGroup'] ) && $_POST['getGroup'] === 'true'){
 
 		  $group_start = $groups[$i]['group_start'];
 		  $group_name = $groups[$i]['group_name'];
+		  $group_color = randomColor();
 
 		  $stages = StageOrder::getStages( intval( $groups[$i]['group_species_id'] ), $role->org );
 
@@ -167,7 +257,8 @@ if( isset( $_POST['getGroup'] ) && $_POST['getGroup'] === 'true'){
 
 			  $title = $group_name . ': '. $stages[$j]['stage_name'] . ': ' . $groups[$i]['group_count'];
 
-			  $event = array('id' => $groups[$i]['group_id'], 'title' => $title, 'date_start' => $stage_start, 'date_end' => $stage_end );
+			  $event = array('id' => $groups[$i]['group_id'], 'title' => $title,
+			   'date_start' => $stage_start, 'date_end' => $stage_end, 'color' => $group_color);
 			  array_push( $events, $event );
 
 		  }

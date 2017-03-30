@@ -1,5 +1,4 @@
 <?php
-//require $MODELS.'db_connect.php';
 require $MODELS.'account/Account.php';
 require $MODELS.'role/Role.php';
 
@@ -11,16 +10,31 @@ $role = Role::getFirstRole($account);
 if( $role === false)
 	echo "error";
 
+$modal_content = 'dashboard/modal.tpl';
 $dash_content = 'dashboard/calendar.tpl';
-$page_title = "dashboard";
+$page_title = "Dashboard";
+$show_calendar = true;
 
 if( isset($_GET['page']) && $_GET['page'] === "settings"){
+	$page_title = "Settings";
 	$dash_content = 'account/settings.tpl';
+	$show_calendar = false;
 }
-
+else if( isset($_GET['page']) && $_GET['page'] === "allSpecies"){
+	$page_title = "Species";
+	$dash_content = 'dashboard/allSpecies.tpl';
+	$show_calendar = false;
+}
+else if( isset($_GET['page']) && $_GET['page'] === "allStages" ){
+	$page_title = "Stages";
+	$dash_content = 'dashboard/allStages.tpl';
+	$show_calendar = false;
+}
 
 db_close();
 
+$smarty->assign('show_calendar', $show_calendar);
+$smarty->assign('dash_modal', $modal_content);
 $smarty->assign('dash_content',$dash_content);
 $smarty->assign('page_title',$page_title);
 $smarty->assign('account', $account);

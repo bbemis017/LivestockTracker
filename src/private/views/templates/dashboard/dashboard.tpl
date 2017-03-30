@@ -37,18 +37,33 @@
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> {$account->username} <b class="caret"></b></a>
 					<ul class="dropdown-menu">
 						<li>
-							<a href="/accounts/signout"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+							<a href="{$HOST}/account/signout"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
 						</li>
 					</ul>
 				</li>
 			</ul>
 
 			<!--Side bar -->
-			<div class=" collapse navbar-collapse">
+			<div class="navbar-collapse navbar-ex1-collapse collapse in">
 				<ul class="nav navbar-nav side-nav">
 					<li id="dashboard">
-						<a href="{$HOST}/dashboard"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
+						<a href="javascript:;" data-toggle="collapse" data-target="#content">
+							<i class="fa fa-fw fa-dashboard"></i> dashboard
+							<span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+						</a>
+						<ul id="content" class="collapse">
+							<li>
+								<a href="{$HOST}/dashboard"><i class="fa fa-fw fa-dashboard"></i> &emsp; Calendar</a>
+							</li>
+							<li id="allSpecies">
+								<a href="{$HOST}/dashboard?page=allSpecies"><i class="fa fa-fw fa-dashboard"></i> &emsp; Species</a>
+							</li>
+							<li id="allStages">
+								<a href="{$HOST}/dashboard?page=allStages"><i class="fa fa-fw fa-dashboard"></i> &emsp; Stages</a>
+							</li>
+						</ul>
 					</li>
+
 					<li id="settings">
 						<a href="{$HOST}/dashboard?page=settings"><i class="fa fa-fw fa-bar-chart-o"></i> Settings</a>
 					</li>
@@ -62,7 +77,10 @@
 
 		<div class="container-fluid dash-content-block">
 			<div class="row">
-				{if $dash_content != ''}
+				{if $dash_modal != '' }
+					{include file=$dash_modal}
+				{/if}
+				{if $dash_content != 'Dashboard'}
 					{include file=$dash_content}
 				{/if}
 			</div>
@@ -72,6 +90,13 @@
 		<!-- scripts -->
 
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-		<script src='{$HOST}/public/js/calendar.js'></script>
+		<script src='{$HOST}/public/js/modal.js'></script>
+		{if $page_title == 'Dashboard'}
+			<script src='{$HOST}/public/js/calendar.js'></script>
+		{elseif $page_title == 'Species'}
+			<script src='{$HOST}/public/js/loadSpecies.js'></script>
+		{elseif $page_title == 'Stages'}
+			<script src='{$HOST}/public/js/loadStages.js'></script>
+		{/if}
 	</body>
 </html>

@@ -52,6 +52,47 @@ class Group {
 	  }
   }
 
+	public static function updateEndDates($speciesId,$org){
+
+		$sql = sprintf(
+			"SELECT
+				`group_id`,`group_start`
+			FROM
+				`group`
+			WHERE
+				`group_species_id`='%d' AND `group_org_id`='%d';",
+			$speciesId,
+			$org->id
+		);
+
+		$result = query_array($sql);
+
+		$success = true;
+		for($i = 0; $i < count($result); $i++){
+
+			$groupLength = StageOrder::getGroupLength($speciesId,$org);
+
+			$end_date = Group::calcEndDate($result[$i]['group_start'], $groupLength);
+
+			$sql = sprintf(
+				"UPDATE `group`
+				SET
+					`group_end`='%s'
+				WHERE
+					`group_id`='%d' AND `group_org_id`='%d' AND `group_species_id`='%d';",
+				escape_str($end_date),
+				$result[$i]['group_id'],
+				$org->id,
+				$speciesId
+			);
+
+			$success = query_first($sql);
+			if( $success == false)
+				return $success;
+		}
+		return $success;
+	}
+
   public static function createGroup($name,$start,$groupLength,$count,$speciesId,$org){
 
 	$end = Group::calcEndDate($start, $groupLength);

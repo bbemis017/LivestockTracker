@@ -34,6 +34,25 @@ class Stage {
 
   }
 
+	public static function updateStage($id,$name,$length,$org){
+		$sql = sprintf(
+			"UPDATE `stage`
+			SET `stage_name`='%s',`stage_length`='%d'
+			WHERE `stage_id`='%d' AND `stage_org_id`='%d';",
+			escape_str($name),
+			$length,
+			$id,
+			$org->id
+		);
+
+		$result = query_first($sql);
+		if($result === true){
+			return new Stage($id,$name,$length,$org);
+		} else {
+			return false;
+		}
+	}
+
   public static function getstageList($org){
     $sql = sprintf(
       "SELECT

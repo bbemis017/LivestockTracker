@@ -3,7 +3,7 @@
 $IP = $_SERVER['HTTP_HOST'];
 $HOST = "http://" . $IP . '/livestocktracker';
 
-$VERSION = '0.3.0 Alpha';
+$VERSION = '0.4.0 Alpha';
 
 //directories
 $ROOT_DIR = __DIR__ . "/../";
@@ -25,11 +25,5 @@ $AUTH = array(
 
 //method to use to connect to database
 $DATABASE = "mysql_connect.php";
-
-//local settings for non-production
-if( isset($LOCAL_CONFIG) ){
-  require 'local_constants.php';
-}
-
 
 ?>

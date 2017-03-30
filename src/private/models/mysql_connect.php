@@ -8,14 +8,6 @@ if( mysqli_connect_errno() ){
 	exit();
 }
 
-/*
-$result = query_first("INSERT INTO `account` (`account_username`,`account_password`,`account_email`,`account_active`) VALUES ('bbemis','password','bbemis@purdue.edu','0');");
-echo $result;
-*/
-
-//$result = query_first("SELECT * FROM `account`;");
-//
-
 function query($query){
 	global $db_link;
   return mysqli_query($db_link,$query);
@@ -34,27 +26,26 @@ function assoc($result){
  * Insert returns true on success
  * Select returns first record as assocative array
  */
-/*
 function query_first($query){
-	global $db_link;
-	$data = array();
 
-	$result = query($query);
+  $result = query($query);
+  if( !isset($result) ){
+    return false;
+  }
 
-	if( $result === TRUE ){
-		return true;
-	}
-	else if( $result === FALSE ){
-		return false;
-	}
-	else if($result){
-		$data = $result->fetch_assoc();
-	}
+  else if( $result === TRUE ){
+    return true;
+  }
+  else if( $result === FALSE ){
+    return false;
+  }
+  else if( $result){
+    $data = assoc($result);
+  }
 
-	free_result($result);
-	return $data;
+  free_result($result);
+  return $data;
 }
-*/
 
 function query_array($query){
 
