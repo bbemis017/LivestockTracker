@@ -46,7 +46,9 @@ if( $payload['repository']['full_name'] !== $secret_key['repo_name']
  }
 
 //update code base
-echo shell_exec("git reset --hard;git checkout master; git pull origin master");
+echo shell_exec("git reset --hard 2>&1");
+echo shell_exec("git checkout master 2>&1");
+echo shell_exec("git pull origin master 2>&1");
 
 //update database
 echo shell_exec("sh " . $SCRIPTS . "db_setup.sh");
