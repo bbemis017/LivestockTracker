@@ -102,5 +102,42 @@ class Account {
 		}
 
 	}
+
+	public static function emailExists($email){
+		$sql = sprintf("SELECT
+			 	COUNT(*) AS counts
+			 FROM `account`
+			 WHERE `account_email` = '%s';",
+			 escape_str($email)
+		);
+
+		$result = query_first($sql);
+
+		if( $result === false){
+			return false;
+		}
+		else{
+			return $result['counts'] > 0;
+		}
+	}
+
+	public static function activate($id){
+		$sql = sprintf("UPDATE
+				`account`
+			SET `account_active`='1'
+			WHERE `account_id` = '%d';",
+			$id
+		);
+
+		$result = query_first($sql);
+
+		if( $result === false ){
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+
 }
 ?>

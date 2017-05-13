@@ -5,6 +5,7 @@
 		"/account/login" => "account/login.php",
 		"/account/signup" => "account/signup.php",
 		"/account/signout" => "account/signout.php",
+		"/account/verification" => "account/verification.php",
 
 		"/dashboard" => "dashboard/show.php",
 		"/dashboard/ajax/" => "dashboard/ajax_requests.php"
