@@ -8,7 +8,7 @@ if( isset( $_GET['key'] ) && isset( $_GET['email'] ) ){
 	$key = $_GET['key'];
 	$email = $_GET['email'];
 
-	$account_id = EmailKey::verify( $email, $key);
+	$account_id = EmailKey::verify( $email, $key, $KEY_TYPE['verification'] );
 
 	if( $account_id == false ){
 		//request was not valid

@@ -6,6 +6,8 @@
 		"/account/signup" => "account/signup.php",
 		"/account/signout" => "account/signout.php",
 		"/account/verification" => "account/verification.php",
+		"/account/reset_email" => "account/reset_email.php",
+		"/account/reset_password" => "account/reset_password.php",
 
 		"/dashboard" => "dashboard/show.php",
 		"/dashboard/ajax/" => "dashboard/ajax_requests.php"

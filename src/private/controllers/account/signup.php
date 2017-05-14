@@ -24,9 +24,15 @@ if(  $_SERVER['REQUEST_METHOD'] === 'POST' ){
 				$role = Role::createRole($account,$org,2);
 
 				//create and store the verification key
-				$emailKey = EmailKey::createNewEmailKey($account);
+				$emailKey = EmailKey::createNewEmailKey($account, $key_type['verification'] );
 
-				//TODO: send email
+				if( active_module("sendmail") ){
+					//TODO: send email
+				}
+				else{
+					//log email
+					//TODO:
+				}
 
 				redirect_url('/dashboard');
 			}

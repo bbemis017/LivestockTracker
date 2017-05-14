@@ -103,6 +103,23 @@ class Account {
 
 	}
 
+	public static function getAccountFromId($id){
+		$sql = sprintf("SELECT
+				`account_id`,`account_username`,`account_email`,`account_active`
+			FROM `account`
+			WHERE `account_id` = '%d';",
+			$id
+		);
+
+		$result = query_first($sql);
+		if( $result === false){
+			return false;
+		}
+		else{
+			return new Account($result['account_id'],$result['account_username'],$result['account_email'],$result['account_active'] );
+		}
+	}
+
 	public static function emailExists($email){
 		$sql = sprintf("SELECT
 			 	COUNT(*) AS counts
@@ -137,6 +154,50 @@ class Account {
 		else {
 			return true;
 		}
+	}
+
+	public static function isActivated($email_or_username){
+		$sql = sprintf("SELECT
+				`account_id`,`account_active`
+			FROM `account`
+			WHERE `account_email`= '%s' OR `account_username`='%s';",
+			escape_str($email_or_username),
+			escape_str($email_or_username)
+		);
+
+		$result = query_first($sql);
+
+		if( $result === false){
+			return "email does not exist";
+		}
+		else if( $result['account_active'] == 0){
+			return false;
+		}
+		else if( $result['account_active'] == 1){
+			return $result['account_id'];
+		}
+		else{
+			return "error";
+		}
+	}
+
+	public static function newPassword($accountId,$password){
+		$sql = sprintf("UPDATE
+				`account`
+			SET `account_password` = '%s'
+			WHERE `account_id` = '%d';",
+			password_hash($password,PASSWORD_BCRYPT),
+			$accountId
+		);
+
+		$result = query_first($sql);
+		if( $result === false){
+			return false;
+		}
+		else{
+			return true;
+		}
+
 	}
 
 }

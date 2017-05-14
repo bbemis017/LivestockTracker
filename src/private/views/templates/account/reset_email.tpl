@@ -1,26 +1,25 @@
 <html>
 	<head>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-		<title>Login</title>
+		<title>Reset Password</title>
 	</head>
 	<body>
 
 		<div class="row">
 			<form method="POST" class="col-xs-6 col-xs-offset-3">
 				<h2 style="text-align: center;">Livestock Tracker</h2>
-				<h3>Login</h3>
-				<label>Username:</label>
-				<input type="text" name="username" placeholder="Username or Email" class="form-control" autofocus/>
-				<label>Password:</label>
-				<input type="password" name="password" placeholder="Password" class="form-control"/>
-				</br>
-				<a href="{$HOST}/account/signup">New User?</a>
-				<div class="pull-right">
-					{if $show_pass_reset }
-						<button name="password_reset" type="submit" class="btn btn-danger">reset password</button>
-					{/if}
-					<button name="login" type="submit" class="btn btn-primary" focus>Log In</button>
-				</div>
+				<h3>Reset Password</h3>
+				{if $result == ''}
+					<label>Username Or Email:</label>
+					<input type="text" name="username" placeholder="Username" value="{$username_or_email}" class="form-control"/>
+					</br>
+					<a href="{$HOST}/account/signup">New User?</a>
+					<div class="pull-right">
+						<button name="send_email" type="submit" class="btn btn-primary">Send Email</button>
+					</div>
+				{else}
+					<label>{$result}<label>
+				{/if}
 			</form>
 		</div>
 

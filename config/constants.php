@@ -23,6 +23,12 @@ $AUTH = array(
   "super"
 );
 
+//different types of keys for email_keys table
+$KEY_TYPE = array(
+	"verification" => 0,
+	"password_reset" => 1
+);
+
 //method to use to connect to database
 $DATABASE = "mysql_connect.php";
 
