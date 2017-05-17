@@ -5,10 +5,10 @@ if(  $_SERVER['REQUEST_METHOD'] === 'POST' ){
   if( isset( $_POST['username'] ) && isset( $_POST['password'] ) && isset( $_POST['email'] )
       && isset( $_POST['password2'] ) && isset( $_POST['organization'] ) ) {
 
-    require $MODELS.'account/Account.php';
+	require $MODELS.'account/Account.php';
 	require $MODELS.'email_keys/EmailKey.php';
-    require $MODELS.'organization/Organization.php';
-    require $MODELS.'role/Role.php';
+	require $MODELS.'organization/Organization.php';
+	require $MODELS.'role/Role.php';
 
 	//make sure email doesn't already exist
 	if( !Account::emailExists( $_POST['email'] ) ){
@@ -26,15 +26,24 @@ if(  $_SERVER['REQUEST_METHOD'] === 'POST' ){
 				//create and store the verification key
 				$emailKey = EmailKey::createNewEmailKey($account, $key_type['verification'] );
 
-				if( active_module("sendmail") ){
-					//TODO: send email
+				if( active_module("mail_ses") ){
+					require $MODULE_DIR . 'mail_ses/email.php';
+
+					$template = $MODULE_DIR . 'mail_ses/verification_email.tpl';
+
+					$result = sendVerificationEmail($account->account->email,$emailKey->key,"Verify your email", $template);
 				}
 				else{
-					//log email
-					//TODO:
+					$result = true;
 				}
 
-				redirect_url('/dashboard');
+				if( $result == true){
+					redirect_url('/dashboard');
+				}
+				else{
+					echo "email failed to send";
+				}
+
 			}
 
 		}

@@ -9,7 +9,11 @@ $result = "";
 
 if( $_SERVER['REQUEST_METHOD'] === 'POST' ){
 
-	if( isset($_POST['send_email']) && isset($_POST['username']) ){
+	if( !active_module("email_ses") ){
+		//email module is not active
+		$result = "Unfortunately our email server is currently down, check back later";
+	}
+	else if( isset($_POST['send_email']) && isset($_POST['username']) ){
 
 		require_once $MODELS.'account/Account.php';
 		require_once $MODELS.'email_keys/EmailKey.php';
@@ -31,9 +35,19 @@ if( $_SERVER['REQUEST_METHOD'] === 'POST' ){
 			$key = EmailKey::createNewEmailKey( $account, $KEY_TYPE['password_reset'] );
 
 			//TODO:send reset email
+			require $MODULE_DIR . 'mail_ses/email.php';
 
+			$template = $MODULE_DIR . 'mail_ses/verification_email.tpl';
 
-			$result = "email sent";
+			$email_result = sendVerificationEmail($account->account->email,$emailKey->key,"Reset Your Password", $template);
+
+ 			if( $email_result == true){
+				$result = "email sent";
+			}
+			else{
+				$result = "email failed to send";
+			}
+
 		}
 
 	}
