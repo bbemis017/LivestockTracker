@@ -26,4 +26,5 @@ $AUTH = array(
 //method to use to connect to database
 $DATABASE = "mysql_connect.php";
 
+require $CONFIG_DIR . 'local.php';
 ?>
