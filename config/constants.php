@@ -26,4 +26,9 @@ $AUTH = array(
 //method to use to connect to database
 $DATABASE = "mysql_connect.php";
 
+if( !file_exists($CONFIG_DIR . 'local.php') ) {
+  echo 'Error: Application not configured';
+}
+
+require $CONFIG_DIR . 'local.php';
 ?>
