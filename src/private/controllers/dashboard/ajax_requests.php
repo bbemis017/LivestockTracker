@@ -66,6 +66,9 @@ if( isset( $_POST['editGroup']) && $_POST['editGroup'] === 'true'){
 if( isset( $_POST['getGroup'] ) && $_POST['getGroup'] === 'true'){
 	$data = array_merge( $data, getGroup($_POST['groupId'], $role) );
 }
+if( isset( $_POST['deleteGroup']) ) {
+	$data = array_merge($data, deleteGroup($_POST['deleteGroup'], $role));
+}
 
 
   db_close();
@@ -295,5 +298,14 @@ function editStage($id,$name,$length,$role){
 	  else {
 		  return array('updateGroup' => 'true');
 	  }
+  }
+
+  function deleteGroup($id, $role) {
+	$result = Group::deleteGroup($id, $role->org);
+	if( $result === false) {
+		return array('error' => 'true', 'deleteGroup' => 'failure');
+	} else {
+		return array('deleteGroup' => 'true');
+	}
   }
 ?>
