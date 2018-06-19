@@ -1,8 +1,4 @@
 <?php
-//ip address
-$IP = $_SERVER['HTTP_HOST'];
-$HOST = "http://" . $IP . '/livestocktracker';
-
 $VERSION = '0.4.2 Alpha';
 
 //directories
