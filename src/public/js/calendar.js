@@ -62,6 +62,7 @@ function editEvent(calEvent, jsEvent, view){
 		$('#groupSize').val( json.groupSize );
 		$('#groupSpeciesName').val( json.groupSpecies );
 		$('#startDate').val( json.groupStart );
+		$('#modalDeleteBtn').removeClass('hidden');
 
 		createGroupForm();
 		modal.modal('show');

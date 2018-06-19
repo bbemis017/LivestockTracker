@@ -28,7 +28,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand font-title" href="/">Livestock Tracker</a>
+				<a class="navbar-brand font-title" href="/livestocktracker/dashboard">Livestock Tracker</a>
 			</div>
 
 			<!-- Top Right Menu Items -->

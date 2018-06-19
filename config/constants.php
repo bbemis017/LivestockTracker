@@ -3,7 +3,7 @@
 $IP = $_SERVER['HTTP_HOST'];
 $HOST = "http://" . $IP . '/livestocktracker';
 
-$VERSION = '0.4.1 Alpha';
+$VERSION = '0.4.2 Alpha';
 
 //directories
 $ROOT_DIR = __DIR__ . "/../";
@@ -26,4 +26,9 @@ $AUTH = array(
 //method to use to connect to database
 $DATABASE = "mysql_connect.php";
 
+if( !file_exists($CONFIG_DIR . 'local.php') ) {
+  echo 'Error: Application not configured';
+}
+
+require $CONFIG_DIR . 'local.php';
 ?>

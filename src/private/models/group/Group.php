@@ -168,5 +168,17 @@ class Group {
 
   }
 
+  public static function deleteGroup($id, $org) {
+	  $sql = sprintf("DELETE FROM `group`
+	  WHERE 
+		( `group_id` = '%d' AND `group_org_id` = '%d');", $id, $org->id);
+	  $result = query_first($sql);
+	  if($result === false) {
+		  return false;
+	  } else {
+		  return true;
+	  }
+  }
+
 }
 ?>
