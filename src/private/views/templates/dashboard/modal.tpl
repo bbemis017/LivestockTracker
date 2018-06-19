@@ -79,6 +79,7 @@
 
       <div class="modal-footer">
         <button id="modalClose" type="button" class="btn btn-default">Close</button>
+        <button id="modalDeleteBtn" type="button" class="btn btn-danger hidden">Delete</button>
         <button id="modalCreateBtn" type="button" class="btn btn-primary">Create</button>
       </div>
     </div>

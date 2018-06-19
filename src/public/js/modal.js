@@ -8,6 +8,7 @@ var numStages;
 $('#modalClose').click(closeModal);
 $('#newStage').click(newStageClick);
 $('#modalCreateBtn').click(submitForm);
+$('#modalDeleteBtn').click(modalDeleteClick);
 $('#cancelStageBtn').click(newStageCancel);
 $('#createStageBtn').click(createStageClick);
 
@@ -65,10 +66,23 @@ function closeModal(){
   for(var i = 0; i < openForms.length; i++){
     //TODO: clear data from form
     openForms[i]['element'].hide();
-  }
+	}
+	if(!$('#modalDeleteBtn').hasClass('hidden')){
+		$('#modalDeleteBtn').addClass('hidden');
+	}
   openForms = new Array();
   modal.modal('hide');
 
+}
+
+function modalDeleteClick() {
+	if (formType === 'Group' && formAction === 'edit') {
+		var data = { deleteGroup: editId};
+		sendAjax("/dashboard/ajax/","POST", (response) => {
+			$('#calendar').fullCalendar('refetchEvents');
+			closeModal();
+		},data);
+	}
 }
 
 function getFormInfo(element,submitFunc){
